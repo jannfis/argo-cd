@@ -136,8 +136,7 @@ func CreateClusterRoleBinding(
 }
 
 // InstallClusterManagerRBAC installs RBAC resources for a cluster manager to operate a cluster. Returns a token
-func InstallClusterManagerRBAC(clientset kubernetes.Interface) (string, error) {
-	const ns = "kube-system"
+func InstallClusterManagerRBAC(clientset kubernetes.Interface, ns string) (string, error) {
 
 	err := CreateServiceAccount(clientset, ArgoCDManagerServiceAccount, ns)
 	if err != nil {

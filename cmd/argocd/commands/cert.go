@@ -98,7 +98,7 @@ func NewCertAddTLSCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command
 					CertType:   "https",
 					CertData:   []byte(strings.Join(certificateArray, "\n")),
 				})
-				certificates, err := certIf.Create(context.Background(), &certificatepkg.RepositoryCertificateCreateRequest{
+				certificates, err := certIf.CreateCertificate(context.Background(), &certificatepkg.RepositoryCertificateCreateRequest{
 					Certificates: &appsv1.RepositoryCertificateList{
 						Items: certificateList,
 					},
@@ -171,7 +171,7 @@ func NewCertAddSSHCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command
 			}
 
 			certList := &appsv1.RepositoryCertificateList{Items: certificates}
-			response, err := certIf.Create(context.Background(), &certificatepkg.RepositoryCertificateCreateRequest{
+			response, err := certIf.CreateCertificate(context.Background(), &certificatepkg.RepositoryCertificateCreateRequest{
 				Certificates: certList,
 				Upsert:       upsert,
 			})
@@ -216,7 +216,7 @@ func NewCertRemoveCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command
 					CertSubType:     certSubType,
 				}
 			}
-			removed, err := certIf.Delete(context.Background(), &certQuery)
+			removed, err := certIf.DeleteCertificate(context.Background(), &certQuery)
 			errors.CheckError(err)
 			if len(removed.Items) > 0 {
 				for _, cert := range removed.Items {
@@ -256,7 +256,7 @@ func NewCertListCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 
 			conn, certIf := argocdclient.NewClientOrDie(clientOpts).NewCertClientOrDie()
 			defer util.Close(conn)
-			certificates, err := certIf.List(context.Background(), &certificatepkg.RepositoryCertificateQuery{HostNamePattern: hostNamePattern, CertType: certType})
+			certificates, err := certIf.ListCertificates(context.Background(), &certificatepkg.RepositoryCertificateQuery{HostNamePattern: hostNamePattern, CertType: certType})
 			errors.CheckError(err)
 			printCertTable(certificates.Items, sortOrder)
 		},

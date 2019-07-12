@@ -29,7 +29,6 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
 var (
-<<<<<<< HEAD
 	filter_CertificateService_ListCertificates_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
@@ -42,36 +41,15 @@ func request_CertificateService_ListCertificates_0(ctx context.Context, marshale
 	}
 
 	msg, err := client.ListCertificates(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-=======
-	filter_CertificateService_List_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
-func request_CertificateService_List_0(ctx context.Context, marshaler runtime.Marshaler, client CertificateServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RepositoryCertificateQuery
-	var metadata runtime.ServerMetadata
-
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_CertificateService_List_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := client.List(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	return msg, metadata, err
 
 }
 
 var (
-<<<<<<< HEAD
 	filter_CertificateService_CreateCertificate_0 = &utilities.DoubleArray{Encoding: map[string]int{"certificates": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 )
 
 func request_CertificateService_CreateCertificate_0(ctx context.Context, marshaler runtime.Marshaler, client CertificateServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-=======
-	filter_CertificateService_Create_0 = &utilities.DoubleArray{Encoding: map[string]int{"certificates": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-)
-
-func request_CertificateService_Create_0(ctx context.Context, marshaler runtime.Marshaler, client CertificateServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	var protoReq RepositoryCertificateCreateRequest
 	var metadata runtime.ServerMetadata
 
@@ -79,25 +57,16 @@ func request_CertificateService_Create_0(ctx context.Context, marshaler runtime.
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-<<<<<<< HEAD
 	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_CertificateService_CreateCertificate_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.CreateCertificate(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-=======
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_CertificateService_Create_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := client.Create(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	return msg, metadata, err
 
 }
 
 var (
-<<<<<<< HEAD
 	filter_CertificateService_DeleteCertificate_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
@@ -110,20 +79,6 @@ func request_CertificateService_DeleteCertificate_0(ctx context.Context, marshal
 	}
 
 	msg, err := client.DeleteCertificate(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-=======
-	filter_CertificateService_Delete_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
-)
-
-func request_CertificateService_Delete_0(ctx context.Context, marshaler runtime.Marshaler, client CertificateServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RepositoryCertificateQuery
-	var metadata runtime.ServerMetadata
-
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_CertificateService_Delete_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := client.Delete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	return msg, metadata, err
 
 }
@@ -166,11 +121,7 @@ func RegisterCertificateServiceHandler(ctx context.Context, mux *runtime.ServeMu
 // "CertificateServiceClient" to call the correct interceptors.
 func RegisterCertificateServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CertificateServiceClient) error {
 
-<<<<<<< HEAD
 	mux.Handle("GET", pattern_CertificateService_ListCertificates_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-=======
-	mux.Handle("GET", pattern_CertificateService_List_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -188,30 +139,18 @@ func RegisterCertificateServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-<<<<<<< HEAD
 		resp, md, err := request_CertificateService_ListCertificates_0(rctx, inboundMarshaler, client, req, pathParams)
-=======
-		resp, md, err := request_CertificateService_List_0(rctx, inboundMarshaler, client, req, pathParams)
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-<<<<<<< HEAD
 		forward_CertificateService_ListCertificates_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	mux.Handle("POST", pattern_CertificateService_CreateCertificate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-=======
-		forward_CertificateService_List_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("POST", pattern_CertificateService_Create_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -229,30 +168,18 @@ func RegisterCertificateServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-<<<<<<< HEAD
 		resp, md, err := request_CertificateService_CreateCertificate_0(rctx, inboundMarshaler, client, req, pathParams)
-=======
-		resp, md, err := request_CertificateService_Create_0(rctx, inboundMarshaler, client, req, pathParams)
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-<<<<<<< HEAD
 		forward_CertificateService_CreateCertificate_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	mux.Handle("DELETE", pattern_CertificateService_DeleteCertificate_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-=======
-		forward_CertificateService_Create_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-
-	})
-
-	mux.Handle("DELETE", pattern_CertificateService_Delete_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -270,22 +197,14 @@ func RegisterCertificateServiceHandlerClient(ctx context.Context, mux *runtime.S
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-<<<<<<< HEAD
 		resp, md, err := request_CertificateService_DeleteCertificate_0(rctx, inboundMarshaler, client, req, pathParams)
-=======
-		resp, md, err := request_CertificateService_Delete_0(rctx, inboundMarshaler, client, req, pathParams)
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-<<<<<<< HEAD
 		forward_CertificateService_DeleteCertificate_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-=======
-		forward_CertificateService_Delete_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 
 	})
 
@@ -293,7 +212,6 @@ func RegisterCertificateServiceHandlerClient(ctx context.Context, mux *runtime.S
 }
 
 var (
-<<<<<<< HEAD
 	pattern_CertificateService_ListCertificates_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "certificates"}, ""))
 
 	pattern_CertificateService_CreateCertificate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "certificates"}, ""))
@@ -307,19 +225,4 @@ var (
 	forward_CertificateService_CreateCertificate_0 = runtime.ForwardResponseMessage
 
 	forward_CertificateService_DeleteCertificate_0 = runtime.ForwardResponseMessage
-=======
-	pattern_CertificateService_List_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "certificates"}, ""))
-
-	pattern_CertificateService_Create_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "certificates"}, ""))
-
-	pattern_CertificateService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "v1", "certificates"}, ""))
-)
-
-var (
-	forward_CertificateService_List_0 = runtime.ForwardResponseMessage
-
-	forward_CertificateService_Create_0 = runtime.ForwardResponseMessage
-
-	forward_CertificateService_Delete_0 = runtime.ForwardResponseMessage
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 )

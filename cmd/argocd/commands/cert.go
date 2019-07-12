@@ -98,11 +98,7 @@ func NewCertAddTLSCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command
 					CertType:   "https",
 					CertData:   []byte(strings.Join(certificateArray, "\n")),
 				})
-<<<<<<< HEAD
 				certificates, err := certIf.CreateCertificate(context.Background(), &certificatepkg.RepositoryCertificateCreateRequest{
-=======
-				certificates, err := certIf.Create(context.Background(), &certificatepkg.RepositoryCertificateCreateRequest{
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 					Certificates: &appsv1.RepositoryCertificateList{
 						Items: certificateList,
 					},
@@ -175,11 +171,7 @@ func NewCertAddSSHCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command
 			}
 
 			certList := &appsv1.RepositoryCertificateList{Items: certificates}
-<<<<<<< HEAD
 			response, err := certIf.CreateCertificate(context.Background(), &certificatepkg.RepositoryCertificateCreateRequest{
-=======
-			response, err := certIf.Create(context.Background(), &certificatepkg.RepositoryCertificateCreateRequest{
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 				Certificates: certList,
 				Upsert:       upsert,
 			})
@@ -196,32 +188,20 @@ func NewCertAddSSHCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command
 // NewCertRemoveCommand returns a new instance of an `argocd cert rm` command
 func NewCertRemoveCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 	var (
-<<<<<<< HEAD
 		certType    string
 		certSubType string
 		certQuery   certificatepkg.RepositoryCertificateQuery
-=======
-		removeAllCerts bool
-		certType       string
-		certSubType    string
-		certQuery      certificatepkg.RepositoryCertificateQuery
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	)
 	var command = &cobra.Command{
 		Use:   "rm REPOSERVER",
 		Short: "Remove certificate of TYPE for REPOSERVER",
 		Run: func(c *cobra.Command, args []string) {
-<<<<<<< HEAD
 			if len(args) < 1 {
-=======
-			if len(args) < 1 && !removeAllCerts {
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 				c.HelpFunc()(c, args)
 				os.Exit(1)
 			}
 			conn, certIf := argocdclient.NewClientOrDie(clientOpts).NewCertClientOrDie()
 			defer util.Close(conn)
-<<<<<<< HEAD
 			hostNamePattern := args[0]
 
 			// Prevent the user from specifying a wildcard as hostname as precaution
@@ -238,22 +218,6 @@ func NewCertRemoveCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command
 				CertSubType:     certSubType,
 			}
 			removed, err := certIf.DeleteCertificate(context.Background(), &certQuery)
-=======
-			if removeAllCerts {
-				certQuery = certificatepkg.RepositoryCertificateQuery{
-					HostNamePattern: "*",
-					CertType:        "*",
-					CertSubType:     "*",
-				}
-			} else {
-				certQuery = certificatepkg.RepositoryCertificateQuery{
-					HostNamePattern: args[0],
-					CertType:        certType,
-					CertSubType:     certSubType,
-				}
-			}
-			removed, err := certIf.Delete(context.Background(), &certQuery)
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 			errors.CheckError(err)
 			if len(removed.Items) > 0 {
 				for _, cert := range removed.Items {
@@ -264,10 +228,6 @@ func NewCertRemoveCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command
 			}
 		},
 	}
-<<<<<<< HEAD
-=======
-	command.Flags().BoolVar(&removeAllCerts, "remove-all", false, "Remove all configured certificates of all types from server (DANGER: use with care!)")
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	command.Flags().StringVar(&certType, "cert-type", "", "Only remove certs of given type (ssh, https)")
 	command.Flags().StringVar(&certSubType, "cert-sub-type", "", "Only remove certs of given sub-type (only for ssh)")
 	return command
@@ -296,11 +256,7 @@ func NewCertListCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 
 			conn, certIf := argocdclient.NewClientOrDie(clientOpts).NewCertClientOrDie()
 			defer util.Close(conn)
-<<<<<<< HEAD
 			certificates, err := certIf.ListCertificates(context.Background(), &certificatepkg.RepositoryCertificateQuery{HostNamePattern: hostNamePattern, CertType: certType})
-=======
-			certificates, err := certIf.List(context.Background(), &certificatepkg.RepositoryCertificateQuery{HostNamePattern: hostNamePattern, CertType: certType})
->>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 			errors.CheckError(err)
 			printCertTable(certificates.Items, sortOrder)
 		},

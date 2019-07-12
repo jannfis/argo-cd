@@ -774,8 +774,13 @@
         "tags": [
           "CertificateService"
         ],
+<<<<<<< HEAD
         "summary": "List all available repository certificates",
         "operationId": "ListCertificates",
+=======
+        "summary": "List all available certificates",
+        "operationId": "ListMixin2",
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
         "parameters": [
           {
             "type": "string",
@@ -809,8 +814,13 @@
         "tags": [
           "CertificateService"
         ],
+<<<<<<< HEAD
         "summary": "Creates repository certificates on the server",
         "operationId": "CreateCertificate",
+=======
+        "summary": "Creates the requested certificates on the server",
+        "operationId": "CreateMixin2",
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
         "parameters": [
           {
             "name": "body",
@@ -834,8 +844,12 @@
         "tags": [
           "CertificateService"
         ],
+<<<<<<< HEAD
         "summary": "Delete the certificates that match the RepositoryCertificateQuery",
         "operationId": "DeleteCertificate",
+=======
+        "operationId": "DeleteMixin2",
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
         "responses": {
           "200": {
             "description": "(empty)",

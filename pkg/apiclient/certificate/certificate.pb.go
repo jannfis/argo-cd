@@ -50,7 +50,11 @@ func (m *RepositoryCertificateQuery) Reset()         { *m = RepositoryCertificat
 func (m *RepositoryCertificateQuery) String() string { return proto.CompactTextString(m) }
 func (*RepositoryCertificateQuery) ProtoMessage()    {}
 func (*RepositoryCertificateQuery) Descriptor() ([]byte, []int) {
+<<<<<<< HEAD
 	return fileDescriptor_certificate_90e5027f94a37a72, []int{0}
+=======
+	return fileDescriptor_certificate_7cceab803f50bba4, []int{0}
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 }
 func (m *RepositoryCertificateQuery) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -115,7 +119,11 @@ func (m *RepositoryCertificateCreateRequest) Reset()         { *m = RepositoryCe
 func (m *RepositoryCertificateCreateRequest) String() string { return proto.CompactTextString(m) }
 func (*RepositoryCertificateCreateRequest) ProtoMessage()    {}
 func (*RepositoryCertificateCreateRequest) Descriptor() ([]byte, []int) {
+<<<<<<< HEAD
 	return fileDescriptor_certificate_90e5027f94a37a72, []int{1}
+=======
+	return fileDescriptor_certificate_7cceab803f50bba4, []int{1}
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 }
 func (m *RepositoryCertificateCreateRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -168,7 +176,11 @@ func (m *RepositoryCertificateResponse) Reset()         { *m = RepositoryCertifi
 func (m *RepositoryCertificateResponse) String() string { return proto.CompactTextString(m) }
 func (*RepositoryCertificateResponse) ProtoMessage()    {}
 func (*RepositoryCertificateResponse) Descriptor() ([]byte, []int) {
+<<<<<<< HEAD
 	return fileDescriptor_certificate_90e5027f94a37a72, []int{2}
+=======
+	return fileDescriptor_certificate_7cceab803f50bba4, []int{2}
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 }
 func (m *RepositoryCertificateResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -214,12 +226,20 @@ const _ = grpc.SupportPackageIsVersion4
 // Client API for CertificateService service
 
 type CertificateServiceClient interface {
+<<<<<<< HEAD
 	// List all available repository certificates
 	ListCertificates(ctx context.Context, in *RepositoryCertificateQuery, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error)
 	// Creates repository certificates on the server
 	CreateCertificate(ctx context.Context, in *RepositoryCertificateCreateRequest, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error)
 	// Delete the certificates that match the RepositoryCertificateQuery
 	DeleteCertificate(ctx context.Context, in *RepositoryCertificateQuery, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error)
+=======
+	// List all available certificates
+	List(ctx context.Context, in *RepositoryCertificateQuery, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error)
+	// Creates the requested certificates on the server
+	Create(ctx context.Context, in *RepositoryCertificateCreateRequest, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error)
+	Delete(ctx context.Context, in *RepositoryCertificateQuery, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error)
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 }
 
 type certificateServiceClient struct {
@@ -230,27 +250,45 @@ func NewCertificateServiceClient(cc *grpc.ClientConn) CertificateServiceClient {
 	return &certificateServiceClient{cc}
 }
 
+<<<<<<< HEAD
 func (c *certificateServiceClient) ListCertificates(ctx context.Context, in *RepositoryCertificateQuery, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error) {
 	out := new(v1alpha1.RepositoryCertificateList)
 	err := c.cc.Invoke(ctx, "/certificate.CertificateService/ListCertificates", in, out, opts...)
+=======
+func (c *certificateServiceClient) List(ctx context.Context, in *RepositoryCertificateQuery, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error) {
+	out := new(v1alpha1.RepositoryCertificateList)
+	err := c.cc.Invoke(ctx, "/certificate.CertificateService/List", in, out, opts...)
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
+<<<<<<< HEAD
 func (c *certificateServiceClient) CreateCertificate(ctx context.Context, in *RepositoryCertificateCreateRequest, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error) {
 	out := new(v1alpha1.RepositoryCertificateList)
 	err := c.cc.Invoke(ctx, "/certificate.CertificateService/CreateCertificate", in, out, opts...)
+=======
+func (c *certificateServiceClient) Create(ctx context.Context, in *RepositoryCertificateCreateRequest, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error) {
+	out := new(v1alpha1.RepositoryCertificateList)
+	err := c.cc.Invoke(ctx, "/certificate.CertificateService/Create", in, out, opts...)
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
+<<<<<<< HEAD
 func (c *certificateServiceClient) DeleteCertificate(ctx context.Context, in *RepositoryCertificateQuery, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error) {
 	out := new(v1alpha1.RepositoryCertificateList)
 	err := c.cc.Invoke(ctx, "/certificate.CertificateService/DeleteCertificate", in, out, opts...)
+=======
+func (c *certificateServiceClient) Delete(ctx context.Context, in *RepositoryCertificateQuery, opts ...grpc.CallOption) (*v1alpha1.RepositoryCertificateList, error) {
+	out := new(v1alpha1.RepositoryCertificateList)
+	err := c.cc.Invoke(ctx, "/certificate.CertificateService/Delete", in, out, opts...)
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	if err != nil {
 		return nil, err
 	}
@@ -260,24 +298,37 @@ func (c *certificateServiceClient) DeleteCertificate(ctx context.Context, in *Re
 // Server API for CertificateService service
 
 type CertificateServiceServer interface {
+<<<<<<< HEAD
 	// List all available repository certificates
 	ListCertificates(context.Context, *RepositoryCertificateQuery) (*v1alpha1.RepositoryCertificateList, error)
 	// Creates repository certificates on the server
 	CreateCertificate(context.Context, *RepositoryCertificateCreateRequest) (*v1alpha1.RepositoryCertificateList, error)
 	// Delete the certificates that match the RepositoryCertificateQuery
 	DeleteCertificate(context.Context, *RepositoryCertificateQuery) (*v1alpha1.RepositoryCertificateList, error)
+=======
+	// List all available certificates
+	List(context.Context, *RepositoryCertificateQuery) (*v1alpha1.RepositoryCertificateList, error)
+	// Creates the requested certificates on the server
+	Create(context.Context, *RepositoryCertificateCreateRequest) (*v1alpha1.RepositoryCertificateList, error)
+	Delete(context.Context, *RepositoryCertificateQuery) (*v1alpha1.RepositoryCertificateList, error)
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 }
 
 func RegisterCertificateServiceServer(s *grpc.Server, srv CertificateServiceServer) {
 	s.RegisterService(&_CertificateService_serviceDesc, srv)
 }
 
+<<<<<<< HEAD
 func _CertificateService_ListCertificates_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+=======
+func _CertificateService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	in := new(RepositoryCertificateQuery)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
+<<<<<<< HEAD
 		return srv.(CertificateServiceServer).ListCertificates(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
@@ -286,16 +337,31 @@ func _CertificateService_ListCertificates_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CertificateServiceServer).ListCertificates(ctx, req.(*RepositoryCertificateQuery))
+=======
+		return srv.(CertificateServiceServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/certificate.CertificateService/List",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CertificateServiceServer).List(ctx, req.(*RepositoryCertificateQuery))
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
+<<<<<<< HEAD
 func _CertificateService_CreateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+=======
+func _CertificateService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	in := new(RepositoryCertificateCreateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
+<<<<<<< HEAD
 		return srv.(CertificateServiceServer).CreateCertificate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
@@ -304,16 +370,31 @@ func _CertificateService_CreateCertificate_Handler(srv interface{}, ctx context.
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CertificateServiceServer).CreateCertificate(ctx, req.(*RepositoryCertificateCreateRequest))
+=======
+		return srv.(CertificateServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/certificate.CertificateService/Create",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CertificateServiceServer).Create(ctx, req.(*RepositoryCertificateCreateRequest))
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
+<<<<<<< HEAD
 func _CertificateService_DeleteCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+=======
+func _CertificateService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	in := new(RepositoryCertificateQuery)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
+<<<<<<< HEAD
 		return srv.(CertificateServiceServer).DeleteCertificate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
@@ -322,6 +403,16 @@ func _CertificateService_DeleteCertificate_Handler(srv interface{}, ctx context.
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CertificateServiceServer).DeleteCertificate(ctx, req.(*RepositoryCertificateQuery))
+=======
+		return srv.(CertificateServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/certificate.CertificateService/Delete",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CertificateServiceServer).Delete(ctx, req.(*RepositoryCertificateQuery))
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -331,6 +422,7 @@ var _CertificateService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*CertificateServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+<<<<<<< HEAD
 			MethodName: "ListCertificates",
 			Handler:    _CertificateService_ListCertificates_Handler,
 		},
@@ -341,6 +433,18 @@ var _CertificateService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteCertificate",
 			Handler:    _CertificateService_DeleteCertificate_Handler,
+=======
+			MethodName: "List",
+			Handler:    _CertificateService_List_Handler,
+		},
+		{
+			MethodName: "Create",
+			Handler:    _CertificateService_Create_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _CertificateService_Delete_Handler,
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -915,6 +1019,7 @@ var (
 )
 
 func init() {
+<<<<<<< HEAD
 	proto.RegisterFile("server/certificate/certificate.proto", fileDescriptor_certificate_90e5027f94a37a72)
 }
 
@@ -949,4 +1054,39 @@ var fileDescriptor_certificate_90e5027f94a37a72 = []byte{
 	0x01, 0xf9, 0x3e, 0x1f, 0x90, 0x67, 0x77, 0xff, 0xe1, 0xfb, 0x97, 0x95, 0x06, 0x83, 0xe9, 0x94,
 	0xf1, 0x6a, 0xfc, 0xf1, 0x77, 0x7e, 0x06, 0x00, 0x00, 0xff, 0xff, 0x67, 0xe0, 0x7a, 0x1e, 0xa5,
 	0x04, 0x00, 0x00,
+=======
+	proto.RegisterFile("server/certificate/certificate.proto", fileDescriptor_certificate_7cceab803f50bba4)
+}
+
+var fileDescriptor_certificate_7cceab803f50bba4 = []byte{
+	// 448 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x53, 0x41, 0x6b, 0x14, 0x31,
+	0x14, 0x26, 0xb5, 0x2c, 0x35, 0x15, 0x84, 0x50, 0x4a, 0x19, 0xea, 0x5a, 0x86, 0x82, 0xa5, 0x60,
+	0xc2, 0x56, 0xbc, 0x78, 0x74, 0xbd, 0x08, 0x22, 0x3a, 0xed, 0xc9, 0x8b, 0x64, 0x67, 0x9f, 0xd9,
+	0xd8, 0x69, 0x12, 0x93, 0x37, 0x83, 0x7b, 0x15, 0xff, 0x81, 0x7f, 0x40, 0x10, 0xff, 0x82, 0x17,
+	0xff, 0x80, 0x47, 0xc1, 0x3f, 0x20, 0x8b, 0x3f, 0x44, 0x26, 0xdb, 0xda, 0x8c, 0x8c, 0xe8, 0x65,
+	0xc1, 0xdb, 0xcb, 0xf7, 0x92, 0xf7, 0xbe, 0xef, 0x7b, 0x79, 0x74, 0x3f, 0x80, 0x6f, 0xc0, 0x8b,
+	0x12, 0x3c, 0xea, 0x17, 0xba, 0x94, 0x08, 0x69, 0xcc, 0x9d, 0xb7, 0x68, 0xd9, 0x66, 0x02, 0x65,
+	0x5b, 0xca, 0x2a, 0x1b, 0x71, 0xd1, 0x46, 0xcb, 0x2b, 0xd9, 0xae, 0xb2, 0x56, 0x55, 0x20, 0xa4,
+	0xd3, 0x42, 0x1a, 0x63, 0x51, 0xa2, 0xb6, 0x26, 0x9c, 0x67, 0x1f, 0x2a, 0x8d, 0xb3, 0x7a, 0xc2,
+	0x4b, 0x7b, 0x26, 0xa4, 0x8f, 0xcf, 0x5f, 0xc6, 0xe0, 0x76, 0x39, 0x15, 0xee, 0x54, 0xb5, 0xcf,
+	0x82, 0x90, 0xce, 0x55, 0x6d, 0x0f, 0x6d, 0x8d, 0x68, 0x46, 0xb2, 0x72, 0x33, 0x39, 0x12, 0x0a,
+	0x0c, 0x78, 0x89, 0x30, 0x5d, 0x96, 0xca, 0xdf, 0x12, 0x9a, 0x15, 0xe0, 0x6c, 0xd0, 0x68, 0xfd,
+	0x7c, 0x7c, 0x49, 0xec, 0x69, 0x0d, 0x7e, 0xce, 0x0e, 0xe8, 0xf5, 0x99, 0x0d, 0xf8, 0x58, 0x9e,
+	0xc1, 0x13, 0x89, 0x08, 0xde, 0xec, 0x90, 0x3d, 0x72, 0x70, 0xb5, 0xf8, 0x1d, 0x66, 0x19, 0xdd,
+	0x68, 0x65, 0x9d, 0xcc, 0x1d, 0xec, 0xac, 0xc5, 0x2b, 0xbf, 0xce, 0x6c, 0x8f, 0x46, 0xc9, 0xc7,
+	0xf5, 0x24, 0xa6, 0xaf, 0xc4, 0x74, 0x0a, 0xe5, 0x9f, 0x08, 0xcd, 0x7b, 0x69, 0x8c, 0x3d, 0x48,
+	0x84, 0x02, 0x5e, 0xd5, 0x10, 0x90, 0xbd, 0xa6, 0xd7, 0x12, 0xef, 0x42, 0xe4, 0xb2, 0x79, 0x74,
+	0xc2, 0x2f, 0xfd, 0xe0, 0x17, 0x7e, 0xc4, 0xe0, 0x79, 0x39, 0xe5, 0xee, 0x54, 0xf1, 0xd6, 0x0f,
+	0x9e, 0xf8, 0xc1, 0x2f, 0xfc, 0xe0, 0xbd, 0x4d, 0x1f, 0xe9, 0x80, 0x45, 0xa7, 0x13, 0xdb, 0xa6,
+	0x83, 0xda, 0x05, 0xf0, 0x18, 0xc5, 0x6d, 0x14, 0xe7, 0xa7, 0xfc, 0x26, 0xbd, 0xd1, 0x5b, 0xa2,
+	0x80, 0xe0, 0xac, 0x09, 0x70, 0xf4, 0x7e, 0x9d, 0xb2, 0x04, 0x3f, 0x06, 0xdf, 0xe8, 0x12, 0xd8,
+	0x07, 0x42, 0xd7, 0xdb, 0x36, 0xec, 0x16, 0x4f, 0x3f, 0xc8, 0x9f, 0x47, 0x91, 0xad, 0x44, 0x65,
+	0xbe, 0xfb, 0xe6, 0xdb, 0x8f, 0x77, 0x6b, 0xdb, 0x6c, 0x2b, 0x7e, 0xb5, 0x66, 0x24, 0x3a, 0xaa,
+	0x3f, 0x13, 0x3a, 0x58, 0x4e, 0x80, 0x89, 0xbf, 0xf3, 0xec, 0xcc, 0x6a, 0x45, 0x7c, 0x0f, 0x23,
+	0xdf, 0xfd, 0xbc, 0x97, 0xef, 0xbd, 0xee, 0xcc, 0x3e, 0x12, 0x3a, 0x78, 0x00, 0x15, 0x20, 0xfc,
+	0x27, 0x2e, 0x1f, 0xf6, 0xb2, 0xbe, 0x3f, 0xfe, 0xb2, 0x18, 0x92, 0xaf, 0x8b, 0x21, 0xf9, 0xbe,
+	0x18, 0x92, 0x67, 0x77, 0xff, 0x61, 0xb9, 0xcb, 0x4a, 0x83, 0xc1, 0xb4, 0xca, 0x64, 0x10, 0xf7,
+	0xf9, 0xce, 0xcf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x07, 0xb9, 0x98, 0x4b, 0x83, 0x04, 0x00, 0x00,
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 }

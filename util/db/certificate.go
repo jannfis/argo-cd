@@ -400,7 +400,11 @@ func tlsCertificatesToMap(tlsCertificates []*TLSCertificate) map[string]string {
 // Get the TLS certificate data from the config map
 func (db *db) getTLSCertificateData() ([]*TLSCertificate, error) {
 	certificates := make([]*TLSCertificate, 0)
+<<<<<<< HEAD
 	certCM, err := db.settingsMgr.GetConfigMapByName(common.ArgoCDTLSCertsConfigMapName)
+=======
+	certCM, err := db.settingsMgr.GetNamedConfigMap(common.ArgoCDTLSCertsConfigMapName)
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	if err != nil {
 		return nil, err
 	}
@@ -414,7 +418,11 @@ func (db *db) getTLSCertificateData() ([]*TLSCertificate, error) {
 // Gets the SSH known host data from ConfigMap and parse it into an array of
 // SSHKnownHostEntry structs.
 func (db *db) getSSHKnownHostsData() ([]*SSHKnownHostsEntry, error) {
+<<<<<<< HEAD
 	certCM, err := db.settingsMgr.GetConfigMapByName(common.ArgoCDKnownHostsConfigMapName)
+=======
+	certCM, err := db.settingsMgr.GetNamedConfigMap(common.ArgoCDKnownHostsConfigMapName)
+>>>>>>> ba731ee5078cc912b48c3e5bf912591cd84fb517
 	if err != nil {
 		return nil, err
 	}

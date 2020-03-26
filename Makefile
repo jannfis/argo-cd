@@ -12,7 +12,7 @@ PACKR_CMD=$(shell if [ "`which packr`" ]; then echo "packr"; else echo "go run v
 VOLUME_MOUNT=$(shell if test selinuxenabled; then echo ":Z"; elif test "$(go env GOOS)"=="darwin"; then echo ":delegated"; else echo ""; fi)
 
 GOCACHE?=$(HOME)/.cache/go-build
-DOCKER_SRCDIR?=${HOME}/go/src
+DOCKER_SRCDIR?=$(shell go env GOPATH)/src
 DOCKER_WORKDIR?=/go/src/github.com/argoproj/argo-cd
 ARGOCD_PROCFILE?=Procfile
 

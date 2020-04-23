@@ -126,6 +126,11 @@ jobs:
       with:
         path: ${{ github.workspace }}/src/github.com/argoproj/argo-cd
 
+    - name: Switch to new branch
+      run: |
+        git switch -c temporal-pr-branch
+        git status
+
     - name: Fetch complete history for blame information
       run: |
         git fetch --prune --no-tags --depth=1 origin +refs/heads/*:refs/remotes/origin/*

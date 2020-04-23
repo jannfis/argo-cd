@@ -130,6 +130,7 @@ jobs:
       run: |
         git switch -c temporal-pr-branch
         git status
+      working-directory: ${{ github.workspace }}/src/github.com/argoproj/argo-cd
 
     - name: Fetch complete history for blame information
       run: |

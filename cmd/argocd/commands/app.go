@@ -975,9 +975,9 @@ func NewApplicationDiffCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 			defer util.Close(conn)
 			appName := args[0]
 			app, err := appIf.Get(context.Background(), &applicationpkg.ApplicationQuery{Name: &appName, Refresh: getRefreshType(refresh, hardRefresh)})
-			errors.CheckError(err)
+			errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 			resources, err := appIf.ManagedResources(context.Background(), &applicationpkg.ResourcesQuery{ApplicationName: &appName})
-			errors.CheckError(err)
+			errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 			liveObjs, err := liveObjects(resources.Items)
 			errors.CheckError(err)
 			items := make([]struct {
@@ -989,18 +989,18 @@ func NewApplicationDiffCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 			conn, settingsIf := clientset.NewSettingsClientOrDie()
 			defer util.Close(conn)
 			argoSettings, err := settingsIf.Get(context.Background(), &settingspkg.SettingsQuery{})
-			errors.CheckError(err)
+			errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 
 			if local != "" {
 				conn, clusterIf := clientset.NewClusterClientOrDie()
 				defer util.Close(conn)
 				cluster, err := clusterIf.Get(context.Background(), &clusterpkg.ClusterQuery{Server: app.Spec.Destination.Server})
-				errors.CheckError(err)
+				errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 				localObjs := groupLocalObjs(getLocalObjects(app, local, argoSettings.AppLabelKey, cluster.ServerVersion, argoSettings.KustomizeOptions, argoSettings.ConfigManagementPlugins), liveObjs, app.Spec.Destination.Namespace)
 				for _, res := range resources.Items {
 					var live = &unstructured.Unstructured{}
 					err := json.Unmarshal([]byte(res.NormalizedLiveState), &live)
-					errors.CheckError(err)
+					errors.CheckErrorWithCode(err, errors.ErrorGeneric)
 
 					key := kube.ResourceKey{Name: res.Name, Namespace: res.Namespace, Group: res.Group, Kind: res.Kind}
 					if key.Kind == kube.SecretKind && key.Group == "" {
@@ -1011,7 +1011,7 @@ func NewApplicationDiffCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 					if local, ok := localObjs[key]; ok || live != nil {
 						if local != nil && !kube.IsCRD(local) {
 							err = kube.SetAppInstanceLabel(local, argoSettings.AppLabelKey, appName)
-							errors.CheckError(err)
+							errors.CheckErrorWithCode(err, errors.ErrorGeneric)
 						}
 
 						items = append(items, struct {
@@ -1071,10 +1071,10 @@ func NewApplicationDiffCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 					overrides[k] = *val
 				}
 				normalizer, err := argo.NewDiffNormalizer(app.Spec.IgnoreDifferences, overrides)
-				errors.CheckError(err)
+				errors.CheckErrorWithCode(err, errors.ErrorGeneric)
 
 				diffRes, err := diff.Diff(item.target, item.live, normalizer, diff.GetDefaultDiffOptions())
-				errors.CheckError(err)
+				errors.CheckErrorWithCode(err, errors.ErrorGeneric)
 
 				if diffRes.Modified || item.target == nil || item.live == nil {
 					fmt.Printf("===== %s/%s %s/%s ======\n", item.key.Group, item.key.Kind, item.key.Namespace, item.key.Name)
@@ -1084,7 +1084,7 @@ func NewApplicationDiffCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 						target = &unstructured.Unstructured{}
 						live = item.live
 						err = json.Unmarshal(diffRes.PredictedLive, target)
-						errors.CheckError(err)
+						errors.CheckErrorWithCode(err, errors.ErrorGeneric)
 					} else {
 						live = item.live
 						target = item.target

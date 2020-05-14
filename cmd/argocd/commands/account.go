@@ -27,6 +27,10 @@ import (
 	sessionutil "github.com/argoproj/argo-cd/util/session"
 )
 
+const (
+	ErrorPasswordMismatch = 1
+)
+
 func NewAccountCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 	var command = &cobra.Command{
 		Use:   "account",
@@ -46,6 +50,9 @@ func NewAccountCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 	return command
 }
 
+// NewAccountUpdatePasswordCommand updates the password for a local account
+// Exit codes:
+// 0 - success
 func NewAccountUpdatePasswordCommand(clientOpts *argocdclient.ClientOptions) *cobra.Command {
 	var (
 		account         string
@@ -58,7 +65,7 @@ func NewAccountUpdatePasswordCommand(clientOpts *argocdclient.ClientOptions) *co
 		Run: func(c *cobra.Command, args []string) {
 			if len(args) != 0 {
 				c.HelpFunc()(c, args)
-				os.Exit(1)
+				os.Exit(errors.ErrorGeneric)
 			}
 			acdClient := argocdclient.NewClientOrDie(clientOpts)
 			conn, usrIf := acdClient.NewAccountClientOrDie()
@@ -77,7 +84,7 @@ func NewAccountUpdatePasswordCommand(clientOpts *argocdclient.ClientOptions) *co
 			if newPassword == "" {
 				var err error
 				newPassword, err = cli.ReadAndConfirmPassword()
-				errors.CheckError(err)
+				errors.CheckErrorWithCode(err, ErrorPasswordMismatch)
 			}
 
 			updatePasswordRequest := accountpkg.UpdatePasswordRequest{
@@ -88,7 +95,7 @@ func NewAccountUpdatePasswordCommand(clientOpts *argocdclient.ClientOptions) *co
 
 			ctx := context.Background()
 			_, err := usrIf.UpdatePassword(ctx, &updatePasswordRequest)
-			errors.CheckError(err)
+			errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 			fmt.Printf("Password updated\n")
 
 			if account == "" || account == userInfo.Username {
@@ -135,7 +142,7 @@ func NewAccountGetUserInfoCommand(clientOpts *argocdclient.ClientOptions) *cobra
 
 			ctx := context.Background()
 			response, err := client.GetUserInfo(ctx, &session.GetUserInfoRequest{})
-			errors.CheckError(err)
+			errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 
 			switch output {
 			case "yaml":
@@ -194,7 +201,7 @@ Resources: %v
 				Resource:    args[1],
 				Subresource: args[2],
 			})
-			errors.CheckError(err)
+			errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 			fmt.Println(response.Value)
 		},
 	}
@@ -230,8 +237,8 @@ func NewAccountListCommand(clientOpts *argocdclient.ClientOptions) *cobra.Comman
 
 			ctx := context.Background()
 			response, err := client.ListAccounts(ctx, &accountpkg.ListAccountRequest{})
+			errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 
-			errors.CheckError(err)
 			switch output {
 			case "yaml", "json":
 				err := PrintResourceList(response.Items, output, false)
@@ -253,7 +260,7 @@ func getCurrentAccount(clientset argocdclient.Client) session.GetUserInfoRespons
 	conn, client := clientset.NewSessionClientOrDie()
 	defer util.Close(conn)
 	userInfo, err := client.GetUserInfo(context.Background(), &session.GetUserInfoRequest{})
-	errors.CheckError(err)
+	errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 	return *userInfo
 }
 
@@ -281,8 +288,8 @@ argocd account get --account <account-name>`,
 			defer util.Close(conn)
 
 			acc, err := client.GetAccount(context.Background(), &accountpkg.GetAccountRequest{Name: account})
+			errors.CheckErrorWithCode(err, errors.ErrorAPIResponse)
 
-			errors.CheckError(err)
 			switch output {
 			case "yaml", "json":
 				err := PrintResourceList(acc, output, true)

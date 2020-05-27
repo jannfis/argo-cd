@@ -432,7 +432,6 @@ show-go-version:
 # Installs all tools required to build and test ArgoCD locally
 .PHONY: install-tools-local
 install-tools-local:
-	sudo ./hack/install.sh dep-linux
 	sudo ./hack/install.sh packr-linux
 	sudo ./hack/install.sh kubectl-linux
 	sudo ./hack/install.sh ksonnet-linux

@@ -9,7 +9,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build all packages
+    name: Build & test all packages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,5 +18,13 @@ jobs:
         uses: actions/setup-go@v1
         with:
           go-version: '1.14.1'
-      - name: Run 'make build-local'
+      - uses: actions/cache@v1
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Compile all packages
         run: make build-local
+      - name: Run all unit tests
+        run: make test-local

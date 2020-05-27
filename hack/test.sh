@@ -5,6 +5,9 @@ set -eux -o pipefail
 which godepgraph || go install github.com/kisielk/godepgraph
 which go-junit-report || go install github.com/jstemmer/go-junit-report
 
+go mod vendor
+export GO111MODULE=off
+
 if godepgraph -s github.com/argoproj/argo-cd/pkg/apiclient | grep packr; then
   echo apiclient package should not depend on packr
   exit 1

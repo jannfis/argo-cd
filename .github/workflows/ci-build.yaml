@@ -28,12 +28,16 @@ jobs:
       - name: Install required packages
         run: |
           sudo apt-get install git -y
-      - uses: actions/cache@v1
+      # - uses: actions/cache@v1
+      #   with:
+      #     path: ~/go/pkg/mod
+      #     key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-go-
+      - name: actions/cache@v1
         with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
+          path: ~/.cache/go-build
+          key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
       - name: Compile all packages
         run: make build-local
       - name: Add ~/go/bin to PATH

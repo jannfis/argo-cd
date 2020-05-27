@@ -293,7 +293,7 @@ build:
 # Build all Go code (local version)
 .PHONY: build-local
 build-local: mod-download-local
-	go build -p 1 -v `go list ./... | grep -v 'resource_customizations\|test/e2e'`
+	go build -v `go list ./... | grep -v 'resource_customizations\|test/e2e'`
 
 # Run all unit tests
 #
@@ -306,7 +306,7 @@ test:
 
 # Run all unit tests (local version)
 .PHONY: test-local
-test-local: mod-download-local
+test-local:
 	if test "$(TEST_MODULE)" = ""; then \
 		./hack/test.sh -coverprofile=coverage.out `go list ./... | grep -v 'test/e2e'`; \
 	else \

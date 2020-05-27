@@ -34,7 +34,8 @@ jobs:
       #     key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
       #     restore-keys: |
       #       ${{ runner.os }}-go-
-      - name: actions/cache@v1
+      - name: Restore go build cache
+        uses: actions/cache@v1
         with:
           path: ~/.cache/go-build
           key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}

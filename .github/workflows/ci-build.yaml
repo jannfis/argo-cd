@@ -34,8 +34,8 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
-      #- name: Compile all packages
-      #  run: make build-local
+      - name: Compile all packages
+        run: make build-local
       - name: Add ~/go/bin to PATH
         run: echo "::add-path::~/go/bin"
       - name: Add /usr/local/bin to PATH

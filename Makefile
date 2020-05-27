@@ -438,7 +438,7 @@ install-tools-local:
 	sudo ./hack/install.sh ksonnet-linux
 	sudo ./hack/install.sh helm2-linux
 	sudo ./hack/install.sh helm-linux
-	./hack/install.sh codegen-tools
+	sudo ./hack/install.sh codegen-tools
 	./hack/install.sh codegen-go-tools
 	./hack/install.sh lint-tools
 

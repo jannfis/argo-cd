@@ -150,7 +150,7 @@ clientgen:
 	./hack/update-codegen.sh
 
 .PHONY: codegen-local
-codegen-local: mod-vendor-local gogen protogen clientgen openapigen manifests-local
+codegen-local: mod-download-local gogen protogen clientgen openapigen manifests-local
 
 .PHONY: codegen
 codegen:
@@ -292,8 +292,7 @@ build:
 
 # Build all Go code (local version)
 .PHONY: build-local
-build-local: mod-vendor-local
-	export GO111MODULE=off
+build-local: mod-download-local
 	go build -p 1 -v `go list ./... | grep -v 'resource_customizations\|test/e2e'`
 
 # Run all unit tests
@@ -307,7 +306,7 @@ test:
 
 # Run all unit tests (local version)
 .PHONY: test-local
-test-local: mod-vendor-local
+test-local: mod-download-local
 	if test "$(TEST_MODULE)" = ""; then \
 		./hack/test.sh -coverprofile=coverage.out `go list ./... | grep -v 'test/e2e'`; \
 	else \
@@ -344,7 +343,7 @@ start-e2e:
 
 # Starts e2e server locally (or within a container)
 .PHONY: start-e2e-local
-start-e2e-local: mod-vendor-local
+start-e2e-local: mod-download-local
 	export GO111MODULE=off
 	kubectl create ns argocd-e2e || true
 	kubectl config set-context --current --namespace=argocd-e2e
@@ -374,7 +373,7 @@ start:
 
 # Starts a local instance of ArgoCD
 .PHONY: start-local
-start-local: mod-vendor-local
+start-local: mod-download-local
 	# check we can connect to Docker to start Redis
 	killall goreman || true
 	kubectl create ns argocd || true

@@ -29,6 +29,6 @@ jobs:
       - name: Set PATH
         run: echo "::add-path::~/go/bin"
       - name: Install tools required for local execution
-        run: sudo make install-tools-local
+        run: make install-tools-local
       - name: Run all unit tests
         run: make test-local

@@ -68,3 +68,21 @@ jobs:
           git config --global user.email "john.doe@example.com"
       - name: Run all unit tests
         run: make test-local
+  codegen:
+    name: Run codegen and check nothing changed
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Golang
+        uses: actions/setup-go@v1
+        with:
+          go-version: '1.14.1'
+      - name: Add ~/go/bin to PATH
+        run: echo "::add-path::~/go/bin"
+      - name: Install tools required for local execution
+        run: make install-tools-local
+      - name: Run codegen
+        run: make codegen-local

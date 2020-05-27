@@ -150,7 +150,7 @@ clientgen:
 	./hack/update-codegen.sh
 
 .PHONY: codegen-local
-codegen-local: mod-download-local gogen protogen clientgen openapigen manifests-local
+codegen-local: gogen protogen clientgen openapigen manifests-local
 
 .PHONY: codegen
 codegen:

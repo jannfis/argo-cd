@@ -18,6 +18,13 @@ jobs:
         uses: actions/setup-go@v1
         with:
           go-version: '1.14.1'
+      - name: Switch to temporal branch so we re-attach head
+        run: |
+          git switch -c temporal-pr-branch
+          git status
+      - name: Fetch complete history for blame information
+        run: |
+          git fetch --prune --no-tags --depth=1 origin +refs/heads/*:refs/remotes/origin/*
       - name: Install required packages
         run: |
           sudo apt-get install git -y

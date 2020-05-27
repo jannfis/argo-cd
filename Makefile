@@ -308,7 +308,6 @@ test:
 # Run all unit tests (local version)
 .PHONY: test-local
 test-local: mod-vendor-local
-	export GO111MODULE=off
 	if test "$(TEST_MODULE)" = ""; then \
 		./hack/test.sh -coverprofile=coverage.out `go list ./... | grep -v 'test/e2e'`; \
 	else \

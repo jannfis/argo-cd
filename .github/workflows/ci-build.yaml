@@ -51,4 +51,4 @@ jobs:
       - name: Run all unit tests
         run: make test-local
         env:
-          GO111MODULE=off
+          GO111MODULE: off

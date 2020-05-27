@@ -12,6 +12,25 @@ jobs:
     name: Build & test all packages
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Golang
+        uses: actions/setup-go@v1
+        with:
+          go-version: '1.14.1'
+      - name: Restore go build cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/go-build
+          key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
+      - name: Compile all packages
+        run: make build-local
+  test:
+    name: Run unit tests for all packages
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
       - name: Create checkout directory
         run: mkdir -p ~/go/src/github.com/argoproj
       - name: Checkout code
@@ -22,6 +41,9 @@ jobs:
         uses: actions/setup-go@v1
         with:
           go-version: '1.14.1'
+      - name: Install required packages
+        run: |
+          sudo apt-get install git -y
       - name: Switch to temporal branch so we re-attach head
         run: |
           git switch -c temporal-pr-branch
@@ -29,28 +51,17 @@ jobs:
       - name: Fetch complete history for blame information
         run: |
           git fetch --prune --no-tags --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-      - name: Install required packages
-        run: |
-          sudo apt-get install git -y
-
+      - name: Add ~/go/bin to PATH
+        run: echo "::add-path::~/go/bin"
+      - name: Add /usr/local/bin to PATH
+        run: echo "::add-path::/usr/local/bin"
       - name: Restore go build cache
         uses: actions/cache@v1
         with:
           path: ~/.cache/go-build
           key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
-
-      - name: Compile all packages
-        run: make build-local
-
-      - name: Add ~/go/bin to PATH
-        run: echo "::add-path::~/go/bin"
-
-      - name: Add /usr/local/bin to PATH
-        run: echo "::add-path::/usr/local/bin"
-
       - name: Install tools required for local execution
         run: make install-tools-local
-
       - name: Setup git username and email
         run: |
           git config --global user.name "John Doe"

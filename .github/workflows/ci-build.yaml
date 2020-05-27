@@ -50,5 +50,3 @@ jobs:
         run: go mod vendor
       - name: Run all unit tests
         run: make test-local
-        env:
-          GO111MODULE: off

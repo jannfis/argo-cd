@@ -13,6 +13,9 @@ if godepgraph -s github.com/argoproj/argo-cd/pkg/apiclient | grep packr; then
   exit 1
 fi
 
+rm -rf vendor/
+export GO111MODULE=on
+
 TEST_RESULTS=${TEST_RESULTS:-test-results}
 TEST_FLAGS=
 

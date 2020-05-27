@@ -35,5 +35,9 @@ jobs:
         run: echo "::add-path::/usr/local/bin"
       - name: Install tools required for local execution
         run: make install-tools-local
+      - name: Setup git username and email
+        run: |
+          git config --global user.name "John Doe"
+          git config --global user.email "john.doe@example.com"
       - name: Run all unit tests
         run: make test-local

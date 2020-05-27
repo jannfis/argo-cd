@@ -46,7 +46,5 @@ jobs:
         run: |
           git config --global user.name "John Doe"
           git config --global user.email "john.doe@example.com"
-      - name: Vendor go modules
-        run: go mod vendor
       - name: Run all unit tests
         run: make test-local

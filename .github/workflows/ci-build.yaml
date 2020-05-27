@@ -11,8 +11,6 @@ jobs:
   build:
     name: Build & test all packages
     runs-on: ubuntu-latest
-    env:
-      PATH: ~/go/bin:${{ env.PATH }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -28,6 +26,8 @@ jobs:
             ${{ runner.os }}-go-
       - name: Compile all packages
         run: make build-local
+      - name: Set PATH
+        run: echo "::add-path::~/go/bin"
       - name: Install tools required for local execution
         run: make install-tools-local
       - name: Run all unit tests

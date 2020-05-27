@@ -27,7 +27,9 @@ jobs:
       #- name: Compile all packages
       #  run: make build-local
       - name: Set PATH
-        run: echo "::add-path::~/go/bin"
+        run: |
+          echo "::add-path::~/go/bin"
+          echo "::add-path::/usr/local/bin"
       - name: Install tools required for local execution
         run: make install-tools-local
       - name: Run all unit tests

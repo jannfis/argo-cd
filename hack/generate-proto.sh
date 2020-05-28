@@ -17,7 +17,7 @@ jq --version
 PROJECT_ROOT=$(cd $(dirname ${BASH_SOURCE})/..; pwd)
 CODEGEN_PKG=${CODEGEN_PKG:-$(cd ${PROJECT_ROOT}; ls -d -1 ./vendor/k8s.io/code-generator 2>/dev/null || echo ../code-generator)}
 PATH="${PROJECT_ROOT}/dist:${PATH}"
-MOD_ROOT=${GOPATH}/pkg/mod
+GRPC_GW_PATH=$(go list -mod=mod -m -f "{{.Dir}}" github.com/grpc-ecosystem/grpc-gateway)
 
 . ${PROJECT_ROOT}/hack/versions.sh
 
@@ -40,8 +40,6 @@ APIMACHINERY_PKGS=(
     k8s.io/apimachinery/pkg/apis/meta/v1
     k8s.io/api/core/v1
 )
-
-export GO111MODULE=off
 
 ${PROJECT_ROOT}/dist/go-to-protobuf \
     --go-header-file=${PROJECT_ROOT}/hack/custom-boilerplate.go.txt \
@@ -68,20 +66,23 @@ go build -i -o dist/protoc-gen-grpc-gateway ./vendor/github.com/grpc-ecosystem/g
 # protoc-gen-swagger is used to build swagger.json
 go build -i -o dist/protoc-gen-swagger ./vendor/github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 
+export GO111MODULE=off
+
 # Generate server/<service>/(<service>.pb.go|<service>.pb.gw.go)
 PROTO_FILES=$(find $PROJECT_ROOT \( -name "*.proto" -and -path '*/server/*' -or -path '*/reposerver/*' -and -name "*.proto" \) | sort)
 for i in ${PROTO_FILES}; do
-    GOOGLE_PROTO_API_PATH=${MOD_ROOT}/github.com/grpc-ecosystem/grpc-gateway@${grpc_gateway_version}/third_party/googleapis
+    GOOGLE_PROTO_API_PATH=${GRPC_GW_PATH}/third_party/googleapis
     GOGO_PROTOBUF_PATH=${PROJECT_ROOT}/vendor/github.com/gogo/protobuf
     protoc \
         -I${PROJECT_ROOT} \
         -I/usr/local/include \
-        -I./vendor \
-        -I$GOPATH/src \
+        -I${PROJECT_ROOT}/vendor \
+	-I${GOPATH}/src \
+	-I${GOPATH}/pkg/mod \
         -I${GOOGLE_PROTO_API_PATH} \
         -I${GOGO_PROTOBUF_PATH} \
-        --${GOPROTOBINARY}_out=plugins=grpc:$GOPATH/src \
-        --grpc-gateway_out=logtostderr=true:$GOPATH/src \
+        --${GOPROTOBINARY}_out=plugins=grpc:./vendor \
+        --grpc-gateway_out=logtostderr=true:./vendor \
         --swagger_out=logtostderr=true:. \
         $i
 done

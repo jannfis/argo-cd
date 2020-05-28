@@ -199,9 +199,11 @@ require (
 	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
 	gopkg.in/src-d/go-git.v4 v4.12.0
 	gopkg.in/yaml.v2 v2.2.8
+	gopkg.in/yaml.v3 v3.0.0-20190905181640-827449938966 // indirect
 	gotest.tools/gotestsum v0.3.5 // indirect
 	honnef.co/go/tools v0.0.1-2019.2.3 // indirect
 	k8s.io/api v0.18.2
+	k8s.io/apiextensions-apiserver v0.0.0-20190918161926-8f644eb6e783 // indirect
 	k8s.io/apimachinery v0.18.2
 	k8s.io/cli-runtime v0.16.6 // indirect
 	k8s.io/client-go v11.0.1-0.20190816222228-6d55c1b1f1ca+incompatible
@@ -222,6 +224,7 @@ require (
 	layeh.com/gopher-json v0.0.0-20190114024228-97fed8db8427
 	mvdan.cc/interfacer v0.0.0-20180901003855-c20040233aed // indirect
 	mvdan.cc/lint v0.0.0-20170908181259-adc824a0674b // indirect
+	sigs.k8s.io/controller-tools v0.2.2 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
 	vbom.ml/util v0.0.0-20160121211510-db5cfe13f5cc // indirect
 )

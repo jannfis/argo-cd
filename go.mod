@@ -5,6 +5,7 @@ go 1.14
 require (
 	bitbucket.org/bertimus9/systemstat v0.0.0-20180207000608-0eeff89b0690 // indirect
 	bou.ke/monkey v1.0.1
+	github.com/Djarvur/go-err113 v0.0.0-20200410182137-af658d038157 // indirect
 	github.com/JeffAshton/win_pdh v0.0.0-20161109143554-76bb4ee9f0ab // indirect
 	github.com/MakeNowJust/heredoc v0.0.0-20170808103936-bb23615498cd // indirect
 	github.com/Masterminds/semver v1.5.0
@@ -109,6 +110,7 @@ require (
 	github.com/heketi/utils v0.0.0-20170317161834-435bc5bdfa64 // indirect
 	github.com/improbable-eng/grpc-web v0.0.0-20181111100011-16092bd1d58a
 	github.com/jingyugao/rowserrcheck v0.0.0-20191204022205-72ab7603b68a // indirect
+	github.com/jirfag/go-printf-func-name v0.0.0-20191110105641-45db9963cdd3 // indirect
 	github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024
 	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect
 	github.com/karrick/godirwalk v1.7.5 // indirect
@@ -119,6 +121,8 @@ require (
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de // indirect
 	github.com/lpabon/godbc v0.1.1 // indirect
 	github.com/malexdev/utfutil v0.0.0-20180510171754-00c8d4a8e7a8 // indirect
+	github.com/maratori/testpackage v1.0.1 // indirect
+	github.com/matoous/godox v0.0.0-20190911065817-5d6d842e92eb // indirect
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-isatty v0.0.9 // indirect
 	github.com/mattn/go-shellwords v1.0.5 // indirect
@@ -152,6 +156,7 @@ require (
 	github.com/quobyte/api v0.1.2 // indirect
 	github.com/robfig/cron v1.1.0
 	github.com/rs/cors v1.6.0 // indirect
+	github.com/ryancurrah/gomodguard v1.0.4 // indirect
 	github.com/seccomp/libseccomp-golang v0.9.1 // indirect
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/shirou/gopsutil v0.0.0-20190901111213-e4ec7b275ada // indirect
@@ -166,6 +171,7 @@ require (
 	github.com/storageos/go-api v0.0.0-20180912212459-343b3eff91fc // indirect
 	github.com/stretchr/testify v1.5.1
 	github.com/syndtr/gocapability v0.0.0-20160928074757-e7cb7fa329f4 // indirect
+	github.com/tdakkota/asciicheck v0.0.0-20200416190851-d7f85be797a2 // indirect
 	github.com/tetafro/godot v0.3.7 // indirect
 	github.com/thecodeteam/goscaleio v0.1.0 // indirect
 	github.com/timakin/bodyclose v0.0.0-20190930140734-f7f2e9bca95e // indirect
@@ -189,7 +195,7 @@ require (
 	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
-	golang.org/x/tools v0.0.0-20200527183253-8e7acdbce89d // indirect
+	golang.org/x/tools v0.0.0-20200528153144-693125cf9467 // indirect
 	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
 	gonum.org/v1/gonum v0.0.0-20190621125449-90b715451587 // indirect
 	gonum.org/v1/netlib v0.0.0-20190331212654-76723241ea4e // indirect
@@ -197,13 +203,13 @@ require (
 	google.golang.org/grpc v1.23.0
 	gopkg.in/go-playground/webhooks.v5 v5.11.0
 	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
-	gopkg.in/src-d/go-git.v4 v4.12.0
+	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/yaml.v2 v2.2.8
 	gopkg.in/yaml.v3 v3.0.0-20190905181640-827449938966 // indirect
 	gotest.tools/gotestsum v0.3.5 // indirect
-	honnef.co/go/tools v0.0.1-2019.2.3 // indirect
+	honnef.co/go/tools v0.0.1-2020.1.3 // indirect
 	k8s.io/api v0.18.2
-	k8s.io/apiextensions-apiserver v0.0.0-20190918161926-8f644eb6e783 // indirect
+	k8s.io/apiextensions-apiserver v0.16.6 // indirect
 	k8s.io/apimachinery v0.18.2
 	k8s.io/cli-runtime v0.16.6 // indirect
 	k8s.io/client-go v11.0.1-0.20190816222228-6d55c1b1f1ca+incompatible
@@ -212,19 +218,21 @@ require (
 	k8s.io/gengo v0.0.0-20190822140433-26a664648505 // indirect
 	k8s.io/heapster v1.2.0-beta.1 // indirect
 	k8s.io/klog v1.0.0
+	k8s.io/kube-aggregator v0.16.6 // indirect
 	k8s.io/kube-controller-manager v0.0.0 // indirect
 	k8s.io/kube-openapi v0.0.0-20191107075043-30be4d16710a
 	k8s.io/kube-proxy v0.0.0 // indirect
 	k8s.io/kube-scheduler v0.0.0 // indirect
+	k8s.io/kubectl v0.16.6 // indirect
 	k8s.io/kubelet v0.0.0 // indirect
-	k8s.io/kubernetes v1.15.0-alpha.0
+	k8s.io/kubernetes v1.16.5-beta.1
 	k8s.io/legacy-cloud-providers v0.0.0 // indirect
-	k8s.io/repo-infra v0.0.0-20181204233714-00fe14e3d1a3 // indirect
 	k8s.io/utils v0.0.0-20191114200735-6ca3b61696b6
 	layeh.com/gopher-json v0.0.0-20190114024228-97fed8db8427
 	mvdan.cc/interfacer v0.0.0-20180901003855-c20040233aed // indirect
 	mvdan.cc/lint v0.0.0-20170908181259-adc824a0674b // indirect
-	sigs.k8s.io/controller-tools v0.2.2 // indirect
+	mvdan.cc/unparam v0.0.0-20190720180237-d51796306d8f // indirect
+	sigs.k8s.io/controller-tools v0.2.3 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
 	vbom.ml/util v0.0.0-20160121211510-db5cfe13f5cc // indirect
 )

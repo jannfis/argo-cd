@@ -20,11 +20,15 @@ set -o pipefail
 
 SCRIPT_ROOT=$(dirname ${BASH_SOURCE})/..
 . ${SCRIPT_ROOT}/hack/versions.sh
-CODEGEN_PKG=$GOPATH/pkg/mod/k8s.io/code-generator@${kube_version}
+TARGET_SCRIPT=${SCRIPT_ROOT}/dist/generate-groups.sh
+CODEGEN_PKG=$(go list -mod=readonly -m -f "{{.Dir}}" k8s.io/code-generator)
+sed -e '/go install .\/cmd/d' ${CODEGEN_PKG}/generate-groups.sh > ${TARGET_SCRIPT}
+chmod +x ${TARGET_SCRIPT}
 
+go install ${CODEGEN_PKG}/cmd/{defaulter-gen,client-gen,lister-gen,informer-gen,deepcopy-gen}
 
-
-bash -x ${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
+export GO111MODULE=off
+bash -x ${TARGET_SCRIPT} "deepcopy,client,informer,lister" \
   github.com/argoproj/argo-cd/pkg/client github.com/argoproj/argo-cd/pkg/apis \
   "application:v1alpha1" \
   --go-header-file ${SCRIPT_ROOT}/hack/custom-boilerplate.go.txt

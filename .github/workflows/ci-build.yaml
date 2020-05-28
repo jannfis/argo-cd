@@ -92,4 +92,4 @@ jobs:
         run: |
           export GOPATH=$HOME/go
           make codegen-local
-        working-directory: ~/go/src/github.com/argoproj/argo-cd
+        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd

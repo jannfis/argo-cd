@@ -21,11 +21,11 @@ MOD_ROOT=${GOPATH}/pkg/mod
 
 . ${PROJECT_ROOT}/hack/versions.sh
 
-export GO111MODULE=off
-
 # protbuf tooling required to build .proto files from go annotations from k8s-like api types
 go build -i -o dist/go-to-protobuf ./vendor/k8s.io/code-generator/cmd/go-to-protobuf
 go build -i -o dist/protoc-gen-gogo ./vendor/k8s.io/code-generator/cmd/go-to-protobuf/protoc-gen-gogo
+
+export GO111MODULE=off
 
 # Generate pkg/apis/<group>/<apiversion>/(generated.proto,generated.pb.go)
 # NOTE: any dependencies of our types to the k8s.io apimachinery types should be added to the

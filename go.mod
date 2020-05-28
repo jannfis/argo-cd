@@ -84,6 +84,7 @@ require (
 	k8s.io/kubernetes v1.16.6
 	k8s.io/utils v0.0.0-20191114200735-6ca3b61696b6
 	layeh.com/gopher-json v0.0.0-20190114024228-97fed8db8427
+	sigs.k8s.io/controller-tools v0.2.3 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
 
@@ -120,4 +121,6 @@ replace (
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.16.6
 	k8s.io/sample-cli-plugin => k8s.io/sample-cli-plugin v0.16.6
 	k8s.io/sample-controller => k8s.io/sample-controller v0.16.6
+
+	sigs.k8s.io/controller-tools => sigs.k8s.io/controller-tools v0.2.3
 )

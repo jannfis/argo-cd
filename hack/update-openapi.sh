@@ -8,6 +8,8 @@ set -o pipefail
 PROJECT_ROOT=$(cd $(dirname "$0")/.. ; pwd)
 VERSION="v1alpha1"
 
+go install -mod=mod sigs.k8s.io/controller-tools/cmd/controller-gen
+
 go build -o dist/openapi-gen ./vendor/k8s.io/kube-openapi/cmd/openapi-gen
 ./dist/openapi-gen \
   --go-header-file ${PROJECT_ROOT}/hack/custom-boilerplate.go.txt \

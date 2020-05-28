@@ -95,8 +95,7 @@ jobs:
       - name: Run codegen
         run: |
           set -x
-          echo $PATH
-          ls -l ~/go/bin
           export GOPATH=$(go env GOPATH)
+          mkdir -p ${GOPATH}/bin
           cd ~/go/src/github.com/argoproj/argo-cd
           make codegen-local

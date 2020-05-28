@@ -18,5 +18,7 @@ go build -o dist/openapi-gen ./vendor/k8s.io/kube-openapi/cmd/openapi-gen
   --report-filename pkg/apis/api-rules/violation_exceptions.list \
   $@
 
+controller-gen paths=./pkg/apis/application/... crd:trivialVersions=true output:crd:stdout
+
 go build -o ./dist/gen-crd-spec ${PROJECT_ROOT}/hack/gen-crd-spec
 ./dist/gen-crd-spec

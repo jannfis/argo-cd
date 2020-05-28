@@ -86,7 +86,8 @@ func toCRD(un *unstructured.Unstructured) *extensionsobj.CustomResourceDefinitio
 
 func checkErr(err error) {
 	if err != nil {
-		panic(err)
+		exerr := err.(*exec.ExitError)
+		panic(exerr.Stderr)
 	}
 }
 

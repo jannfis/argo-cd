@@ -16,6 +16,7 @@ require (
 	github.com/TomOnTime/utfutil v0.0.0-20180511104225-09c41003ee1d
 	github.com/alicebob/gopher-json v0.0.0-20180125190556-5a6b3ba71ee6 // indirect
 	github.com/alicebob/miniredis v2.5.0+incompatible
+	github.com/argoproj/gitops-engine v0.0.0-00010101000000-000000000000 // indirect
 	github.com/argoproj/pkg v0.0.0-20200319004004-f46beff7cd54
 	github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e // indirect
 	github.com/auth0/go-jwt-middleware v0.0.0-20170425171159-5493cabe49f7 // indirect
@@ -70,7 +71,7 @@ require (
 	github.com/gofrs/flock v0.0.0-20190320160742-5135e617513b // indirect
 	github.com/gogits/go-gogs-client v0.0.0-20190616193657-5a05380e4bc2
 	github.com/gogo/protobuf v1.3.1
-	github.com/golang/protobuf v1.3.1
+	github.com/golang/protobuf v1.3.2
 	github.com/golangci/check v0.0.0-20180506172741-cfe4005ccda2 // indirect
 	github.com/golangci/dupl v0.0.0-20180902072040-3e9179ac440a // indirect
 	github.com/golangci/errcheck v0.0.0-20181223084120-ef45e06d44b6 // indirect
@@ -225,7 +226,7 @@ require (
 	k8s.io/kube-scheduler v0.0.0 // indirect
 	k8s.io/kubectl v0.16.6 // indirect
 	k8s.io/kubelet v0.0.0 // indirect
-	k8s.io/kubernetes v1.16.5-beta.1
+	k8s.io/kubernetes v1.16.6
 	k8s.io/legacy-cloud-providers v0.0.0 // indirect
 	k8s.io/utils v0.0.0-20191114200735-6ca3b61696b6
 	layeh.com/gopher-json v0.0.0-20190114024228-97fed8db8427

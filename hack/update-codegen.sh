@@ -27,7 +27,6 @@ chmod +x ${TARGET_SCRIPT}
 
 go install ${CODEGEN_PKG}/cmd/{defaulter-gen,client-gen,lister-gen,informer-gen,deepcopy-gen}
 
-export GO111MODULE=off
 bash -x ${TARGET_SCRIPT} "deepcopy,client,informer,lister" \
   github.com/argoproj/argo-cd/pkg/client github.com/argoproj/argo-cd/pkg/apis \
   "application:v1alpha1" \

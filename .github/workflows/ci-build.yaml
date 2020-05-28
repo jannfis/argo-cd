@@ -88,6 +88,10 @@ jobs:
         run: echo "::add-path::~/go/bin"
       - name: Install tools required for local execution
         run: make install-tools-local
+      - name: Download & vendor dependencies
+        run: |
+          go mod download
+          go mod vendor -v
       - name: Run codegen
         run: |
           export GOPATH=$(go env GOPATH)

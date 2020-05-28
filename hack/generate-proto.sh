@@ -41,6 +41,8 @@ APIMACHINERY_PKGS=(
     k8s.io/api/core/v1
 )
 
+echo $PATH
+
 ${PROJECT_ROOT}/dist/go-to-protobuf \
     --go-header-file=${PROJECT_ROOT}/hack/custom-boilerplate.go.txt \
     --packages=$(IFS=, ; echo "${PACKAGES[*]}") \

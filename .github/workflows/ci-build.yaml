@@ -90,6 +90,6 @@ jobs:
         run: make install-tools-local
       - name: Run codegen
         run: |
-          export GOPATH=$HOME/go
+          export GOPATH=$(go env GOPATH)
+          cd ~/go/src/github.com/argoproj/argo-cd
           make codegen-local
-        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd

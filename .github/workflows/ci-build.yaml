@@ -83,6 +83,6 @@ jobs:
       - name: Install tools required for local execution
         run: make install-tools-local
       - name: Run codegen
-        run: make codegen-local
-        env:
-          GOPATH: ${{ env.HOME }}/go
+        run: |
+          export GOPATH=$HOME/go
+          make codegen-local

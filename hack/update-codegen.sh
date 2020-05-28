@@ -27,7 +27,7 @@ chmod +x ${TARGET_SCRIPT}
 
 go install ${CODEGEN_PKG}/cmd/{defaulter-gen,client-gen,lister-gen,informer-gen,deepcopy-gen}
 
-bash -x ${TARGET_SCRIPT} "deepcopy,client,informer,lister" \
+GOPATH="$HOME/go" bash -x ${TARGET_SCRIPT} "deepcopy,client,informer,lister" \
   github.com/argoproj/argo-cd/pkg/client github.com/argoproj/argo-cd/pkg/apis \
   "application:v1alpha1" \
   --go-header-file ${SCRIPT_ROOT}/hack/custom-boilerplate.go.txt

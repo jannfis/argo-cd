@@ -66,8 +66,6 @@ go build -i -o dist/protoc-gen-grpc-gateway ./vendor/github.com/grpc-ecosystem/g
 # protoc-gen-swagger is used to build swagger.json
 go build -i -o dist/protoc-gen-swagger ./vendor/github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 
-export GO111MODULE=off
-
 # Generate server/<service>/(<service>.pb.go|<service>.pb.gw.go)
 PROTO_FILES=$(find $PROJECT_ROOT \( -name "*.proto" -and -path '*/server/*' -or -path '*/reposerver/*' -and -name "*.proto" \) | sort)
 for i in ${PROTO_FILES}; do

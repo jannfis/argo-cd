@@ -85,4 +85,4 @@ jobs:
       - name: Run codegen
         run: make codegen-local
         env:
-          GOPATH: ~/go
+          GOPATH: ${{ env.HOME }}/go

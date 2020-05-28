@@ -94,6 +94,6 @@ jobs:
           go mod vendor -v
       - name: Run codegen
         run: |
-          export GOPATH=$(go env GOPATH)
+          ls -l $GOPATH/bin
           cd ~/go/src/github.com/argoproj/argo-cd
           make codegen-local

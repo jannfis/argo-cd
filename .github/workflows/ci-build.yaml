@@ -52,7 +52,7 @@ jobs:
         run: |
           git fetch --prune --no-tags --depth=1 origin +refs/heads/*:refs/remotes/origin/*
       - name: Add ~/go/bin to PATH
-        run: echo "::add-path::~/go/bin"
+        run: echo "::add-path::/home/runner/go/bin"
       - name: Add /usr/local/bin to PATH
         run: echo "::add-path::/usr/local/bin"
       - name: Restore go build cache
@@ -85,7 +85,7 @@ jobs:
       - name: Add /usr/local/bin to PATH
         run: echo "::add-path::/usr/local/bin"
       - name: Add ~/go/bin to PATH
-        run: echo "::add-path::~/go/bin"
+        run: echo "::add-path::/home/runner/go/bin"
       - name: Install tools required for local execution
         run: make install-tools-local
       - name: Download & vendor dependencies
@@ -97,5 +97,6 @@ jobs:
           set -x
           echo $PATH
           ls -l ~/go/bin
+          export GOPATH=$(go env GOPATH)
           cd ~/go/src/github.com/argoproj/argo-cd
           make codegen-local

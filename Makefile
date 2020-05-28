@@ -131,22 +131,18 @@ all: cli image argocd-util
 
 .PHONY: gogen
 gogen:
-	export GO111MODULE=off
 	go generate ./util/argo/...
 
 .PHONY: protogen
 protogen:
-	export GO111MODULE=off
 	./hack/generate-proto.sh
 
 .PHONY: openapigen
 openapigen:
-	export GO111MODULE=off
 	./hack/update-openapi.sh
 
 .PHONY: clientgen
 clientgen:
-	export GO111MODULE=off
 	./hack/update-codegen.sh
 
 .PHONY: codegen-local

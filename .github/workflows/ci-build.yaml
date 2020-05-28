@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build & test all packages
+    name: Build & cache all packages
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -69,10 +69,8 @@ jobs:
       - name: Run all unit tests
         run: make test-local
   codegen:
-    name: Run codegen and check nothing changed
+    name: Generate dynamic code and check nothing has changed
     runs-on: ubuntu-latest
-    needs:
-      - build
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -86,3 +84,5 @@ jobs:
         run: make install-tools-local
       - name: Run codegen
         run: make codegen-local
+        env:
+          GOPATH: ~/go

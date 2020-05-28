@@ -1145,6 +1145,7 @@ k8s.io/kubernetes v1.16.3/go.mod h1:hJd0X6w7E/MiE7PcDp11XHhdgQBYc33vP+WtTJqG/AU=
 k8s.io/kubernetes v1.16.4-beta.0/go.mod h1:hJd0X6w7E/MiE7PcDp11XHhdgQBYc33vP+WtTJqG/AU=
 k8s.io/kubernetes v1.16.4/go.mod h1:OdJXH1Q9L+NDVj158Zo8f6R3NSaOx1ewLUcaJv8hSRE=
 k8s.io/kubernetes v1.16.5-beta.0/go.mod h1:OdJXH1Q9L+NDVj158Zo8f6R3NSaOx1ewLUcaJv8hSRE=
+k8s.io/kubernetes v1.16.5-beta.1 h1:O3XBtPKF3HBEgvf/xxaIENHZ8m13ns4/CAqdV57z76s=
 k8s.io/kubernetes v1.16.5-beta.1/go.mod h1:OdJXH1Q9L+NDVj158Zo8f6R3NSaOx1ewLUcaJv8hSRE=
 k8s.io/kubernetes v1.16.5/go.mod h1:rO6tSgbJjbo6lLkrq4jryUaXqZ2PdDJjzWXKZQmLfnQ=
 k8s.io/kubernetes v1.16.6-beta.0/go.mod h1:rO6tSgbJjbo6lLkrq4jryUaXqZ2PdDJjzWXKZQmLfnQ=

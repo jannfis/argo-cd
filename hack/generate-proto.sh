@@ -43,6 +43,8 @@ APIMACHINERY_PKGS=(
 
 echo $PATH
 
+export GO111MODULE=off
+
 ${PROJECT_ROOT}/dist/go-to-protobuf \
     --go-header-file=${PROJECT_ROOT}/hack/custom-boilerplate.go.txt \
     --packages=$(IFS=, ; echo "${PACKAGES[*]}") \

@@ -16,7 +16,7 @@ require (
 	github.com/TomOnTime/utfutil v0.0.0-20180511104225-09c41003ee1d
 	github.com/alicebob/gopher-json v0.0.0-20180125190556-5a6b3ba71ee6 // indirect
 	github.com/alicebob/miniredis v2.5.0+incompatible
-	github.com/argoproj/gitops-engine v0.0.0-00010101000000-000000000000 // indirect
+	github.com/argoproj/gitops-engine v0.0.0-00010101000000-000000000000
 	github.com/argoproj/pkg v0.0.0-20200319004004-f46beff7cd54
 	github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e // indirect
 	github.com/auth0/go-jwt-middleware v0.0.0-20170425171159-5493cabe49f7 // indirect
@@ -79,6 +79,7 @@ require (
 	github.com/golangci/goconst v0.0.0-20180610141641-041c5f2b40f3 // indirect
 	github.com/golangci/gocyclo v0.0.0-20180528134321-2becd97e67ee // indirect
 	github.com/golangci/gofmt v0.0.0-20190930125516-244bba706f1a // indirect
+	github.com/golangci/golangci-lint v1.27.0 // indirect
 	github.com/golangci/ineffassign v0.0.0-20190609212857-42439a7714cc // indirect
 	github.com/golangci/lint-1 v0.0.0-20191013205115-297bf364a8e0 // indirect
 	github.com/golangci/maligned v0.0.0-20180506175553-b1d89398deca // indirect
@@ -210,11 +211,12 @@ require (
 	gotest.tools/gotestsum v0.3.5 // indirect
 	honnef.co/go/tools v0.0.1-2020.1.3 // indirect
 	k8s.io/api v0.18.2
-	k8s.io/apiextensions-apiserver v0.16.6 // indirect
+	k8s.io/apiextensions-apiserver v0.16.6
 	k8s.io/apimachinery v0.18.2
 	k8s.io/cli-runtime v0.16.6 // indirect
 	k8s.io/client-go v11.0.1-0.20190816222228-6d55c1b1f1ca+incompatible
 	k8s.io/cluster-bootstrap v0.0.0 // indirect
+	k8s.io/code-generator v0.16.6
 	k8s.io/cri-api v0.0.0 // indirect
 	k8s.io/gengo v0.0.0-20190822140433-26a664648505 // indirect
 	k8s.io/heapster v1.2.0-beta.1 // indirect
@@ -224,7 +226,7 @@ require (
 	k8s.io/kube-openapi v0.0.0-20191107075043-30be4d16710a
 	k8s.io/kube-proxy v0.0.0 // indirect
 	k8s.io/kube-scheduler v0.0.0 // indirect
-	k8s.io/kubectl v0.16.6 // indirect
+	k8s.io/kubectl v0.16.6
 	k8s.io/kubelet v0.0.0 // indirect
 	k8s.io/kubernetes v1.16.6
 	k8s.io/legacy-cloud-providers v0.0.0 // indirect

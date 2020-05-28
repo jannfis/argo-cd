@@ -8,7 +8,9 @@ set -o pipefail
 PROJECT_ROOT=$(cd $(dirname "$0")/.. ; pwd)
 VERSION="v1alpha1"
 
-go build -o dist/openapi-gen k8s.io/kube-openapi/cmd/openapi-gen
+export GO111MODULE=off
+
+go build -o dist/openapi-gen ./vendor/k8s.io/kube-openapi/cmd/openapi-gen
 ./dist/openapi-gen \
   --go-header-file ${PROJECT_ROOT}/hack/custom-boilerplate.go.txt \
   --input-dirs github.com/argoproj/argo-cd/pkg/apis/application/${VERSION} \

@@ -72,7 +72,8 @@ for i in ${PROTO_FILES}; do
     protoc \
         -I${PROJECT_ROOT} \
         -I/usr/local/include \
-        -I$GOPATH/src \
+        -I${GOPATH}/pkg/mod \
+        -I${GOPATH}/src \
         -I${GOOGLE_PROTO_API_PATH} \
         -I${GOGO_PROTOBUF_PATH} \
         --${GOPROTOBINARY}_out=plugins=grpc:$GOPATH/src \

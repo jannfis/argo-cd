@@ -78,10 +78,10 @@ jobs:
         uses: actions/setup-go@v1
         with:
           go-version: '1.14.1'
-      - name: Add ~/go/bin to PATH
-        run: echo "::add-path::~/go/bin"
       - name: Add /usr/local/bin to PATH
         run: echo "::add-path::/usr/local/bin"
+      - name: Add ~/go/bin to PATH
+        run: echo "::add-path::~/go/bin"
       - name: Install tools required for local execution
         run: make install-tools-local
       - name: Run codegen

@@ -434,13 +434,12 @@ show-go-version:
 # Installs all tools required to build and test ArgoCD locally
 .PHONY: install-tools-local
 install-tools-local:
-	./hack/install.sh dep-linux
-	./hack/install.sh packr-linux
-	./hack/install.sh kubectl-linux
-	./hack/install.sh ksonnet-linux
-	./hack/install.sh helm2-linux
-	./hack/install.sh helm-linux
-	./hack/install.sh codegen-tools
+	sudo ./hack/install.sh packr-linux
+	sudo ./hack/install.sh kubectl-linux
+	sudo ./hack/install.sh ksonnet-linux
+	sudo ./hack/install.sh helm2-linux
+	sudo ./hack/install.sh helm-linux
+	sudo ./hack/install.sh codegen-tools
 	./hack/install.sh codegen-go-tools
 	./hack/install.sh lint-tools
 

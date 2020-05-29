@@ -86,13 +86,13 @@ jobs:
         run: echo "::add-path::/usr/local/bin"
       - name: Add ~/go/bin to PATH
         run: echo "::add-path::/home/runner/go/bin"
-      - name: Install tools required for local execution
-        run: make install-tools-local
-        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
       - name: Download & vendor dependencies
         run: |
           go mod download
           go mod vendor -v
+        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
+      - name: Install tools required for local execution
+        run: make install-tools-local
         working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
       - name: Run codegen
         run: |

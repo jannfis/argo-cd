@@ -103,3 +103,7 @@ jobs:
           export GOPATH=$(go env GOPATH)
           make codegen-local
         working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
+      - name: Check nothing has changed
+        run: |
+          set -xo pipefail
+          git diff --exit-code -- . ':!assets/swagger.json' | tee codegen.patch

@@ -152,6 +152,7 @@ jobs:
       - name: Install goreman
         run: |
           go get github.com/mattn/goreman
+
       - name: Setup git username and email
         run: |
           git config --global user.name "John Doe"
@@ -161,14 +162,14 @@ jobs:
         timeout-minutes: 30
         run: |
           set -x
-          make start-e2e-local &
-          count=1
-          until curl http://localhost:8080/healthz; do
-            sleep 10;
-            if test $count -ge 60; then
-              echo "Timeout"
-              exit 1
-            fi
-            count=$((count+1))
-          done
+          make start-e2e-local 
+          # count=1
+          # until curl http://localhost:8080/healthz; do
+          #   sleep 10;
+          #   if test $count -ge 60; then
+          #     echo "Timeout"
+          #     exit 1
+          #   fi
+          #   count=$((count+1))
+          # done
       

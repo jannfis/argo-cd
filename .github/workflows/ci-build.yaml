@@ -107,3 +107,4 @@ jobs:
         run: |
           set -xo pipefail
           git diff --exit-code -- . ':!assets/swagger.json' | tee codegen.patch
+        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd

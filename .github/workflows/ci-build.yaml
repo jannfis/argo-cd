@@ -164,13 +164,13 @@ jobs:
           set -x
           netstat -tulpen
           make start-e2e-local 
-          # count=1
-          # until curl http://localhost:8080/healthz; do
-          #   sleep 10;
-          #   if test $count -ge 60; then
-          #     echo "Timeout"
-          #     exit 1
-          #   fi
-          #   count=$((count+1))
-          # done
+          count=1
+          until curl -f http://127.0.0.1:8080/healthz; do
+            sleep 10;
+            if test $count -ge 60; then
+              echo "Timeout"
+              exit 1
+            fi
+            count=$((count+1))
+          done
       

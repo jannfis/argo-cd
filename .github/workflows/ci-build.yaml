@@ -152,10 +152,10 @@ jobs:
         run: echo "::add-path::/usr/local/bin"
       - name: Add ~/go/bin to PATH
         run: echo "::add-path::/home/runner/go/bin"
-      - name: Download & vendor dependencies
+      - name: Download Go dependencies
         run: |
+          # No vendoring here
           go mod download
-          go mod vendor -v
       - name: Install tools required for local execution
         run: make install-tools-local
       - name: Install goreman
@@ -167,13 +167,19 @@ jobs:
           git config --global user.name "John Doe"
           git config --global user.email "john.doe@example.com"
 
+      - name: Pull Docker image required for tests
+        run: |
+          docker pull quay.io/dexidp/dex:v2.22.0
+          docker pull argoproj/argo-cd-ci-builder:v1.0.0
+
       - name: Run E2E server and wait for it being available
         timeout-minutes: 30
         run: |
           set -x
           # Something is weird in GH runners -- there's a phantom listener for
           # port 8080 which is not visible in netstat -tulpen, but still there
-          # with a HTTP listener.
+          # with a HTTP listener. We have API server listening on port 8088
+          # instead.
           make start-e2e-local &
           count=1
           until curl -f http://127.0.0.1:8088/healthz; do

@@ -97,5 +97,6 @@ jobs:
       - name: Run codegen
         run: |
           set -x
+          export GOPATH=$(go env GOPATH)
           make codegen-local
         working-directory: /home/runner/go/src/github.com/argoproj/argo-cd

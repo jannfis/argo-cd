@@ -162,6 +162,10 @@ jobs:
         timeout-minutes: 30
         run: |
           set -x
+          # Something is weird in GH runners -- there's a phantom listener for
+          # port 8080 which is not visible in netstat -tulpen, but still there
+          # with a HTTP listener.
+          export ARGOCD_E2E_APISERVER_PORT=8088
           make start-e2e-local &
           count=1
           until curl -x "" -v -f http://127.0.0.1:8088/healthz; do

@@ -163,7 +163,7 @@ jobs:
         run: |
           set -x
           netstat -tulpen
-          make start-e2e-local 
+          make start-e2e-local &
           count=1
           until curl -f http://127.0.0.1:8080/healthz; do
             sleep 10;

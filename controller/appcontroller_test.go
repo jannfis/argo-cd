@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/argoproj/gitops-engine/pkg/cache/mocks"
+	synccommon "github.com/argoproj/gitops-engine/pkg/sync/common"
 	"github.com/argoproj/gitops-engine/pkg/utils/kube"
-	"github.com/argoproj/gitops-engine/pkg/utils/kube/cache/mocks"
 	"github.com/argoproj/gitops-engine/pkg/utils/kube/kubetest"
-	synccommon "github.com/argoproj/gitops-engine/pkg/utils/kube/sync/common"
 	"github.com/ghodss/yaml"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -470,7 +470,7 @@ func TestFinalizeAppDeletion(t *testing.T) {
 		assert.True(t, patched)
 	}
 
-	// Ensure any stray resources irregulary labeled with instance label of app are not deleted upon deleting,
+	// Ensure any stray resources irregularly labeled with instance label of app are not deleted upon deleting,
 	// when app project restriction is in place
 	{
 		defaultProj := argoappv1.AppProject{

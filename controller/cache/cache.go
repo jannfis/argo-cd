@@ -5,9 +5,9 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/argoproj/gitops-engine/pkg/utils/health"
+	clustercache "github.com/argoproj/gitops-engine/pkg/cache"
+	"github.com/argoproj/gitops-engine/pkg/health"
 	"github.com/argoproj/gitops-engine/pkg/utils/kube"
-	clustercache "github.com/argoproj/gitops-engine/pkg/utils/kube/cache"
 	log "github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -188,9 +188,9 @@ var (
 	}
 )
 
-// skipAppRequeing checks if the object is an API type which we want to skip requeuing against.
+// skipAppRequeuing checks if the object is an API type which we want to skip requeuing against.
 // We ignore API types which have a high churn rate, and/or whose updates are irrelevant to the app
-func skipAppRequeing(key kube.ResourceKey) bool {
+func skipAppRequeuing(key kube.ResourceKey) bool {
 	return ignoredRefreshResources[key.Group+"/"+key.Kind]
 }
 
@@ -244,7 +244,7 @@ func (c *liveStateCache) getCluster(server string) (clustercache.ClusterCache, e
 				continue
 			}
 			app := getApp(r, namespaceResources)
-			if app == "" || skipAppRequeing(r.ResourceKey()) {
+			if app == "" || skipAppRequeuing(r.ResourceKey()) {
 				continue
 			}
 			toNotify[app] = isRootAppNode(r) || toNotify[app]

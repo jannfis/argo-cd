@@ -7,7 +7,7 @@ import (
 	"github.com/argoproj/argo-cd/common"
 	"github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1"
 
-	"github.com/argoproj/gitops-engine/pkg/utils/diff"
+	"github.com/argoproj/gitops-engine/pkg/diff"
 	"github.com/stretchr/testify/assert"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -66,7 +66,7 @@ func TestSaveRepositories(t *testing.T) {
 	assert.ElementsMatch(t, repos, []Repository{{URL: "http://foo"}})
 }
 
-func TestSaveRepositoresNoConfigMap(t *testing.T) {
+func TestSaveRepositoriesNoConfigMap(t *testing.T) {
 	kubeClient := fake.NewSimpleClientset()
 	settingsManager := NewSettingsManager(context.Background(), kubeClient, "default")
 

@@ -3,14 +3,14 @@ package e2e
 import (
 	"testing"
 
-	"github.com/argoproj/gitops-engine/pkg/utils/health"
-	. "github.com/argoproj/gitops-engine/pkg/utils/kube/sync/common"
+	"github.com/argoproj/gitops-engine/pkg/health"
+	. "github.com/argoproj/gitops-engine/pkg/sync/common"
 
 	. "github.com/argoproj/argo-cd/pkg/apis/application/v1alpha1"
 	. "github.com/argoproj/argo-cd/test/e2e/fixture/app"
 )
 
-// when you selectively sync, only seleceted resources should be synced, but the app will be out of sync
+// when you selectively sync, only selected resources should be synced, but the app will be out of sync
 func TestSelectiveSync(t *testing.T) {
 	Given(t).
 		Path("guestbook").

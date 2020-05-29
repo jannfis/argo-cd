@@ -22,8 +22,6 @@ SCRIPT_ROOT=$(dirname ${BASH_SOURCE})/..
 . ${SCRIPT_ROOT}/hack/versions.sh
 CODEGEN_PKG=$GOPATH/pkg/mod/k8s.io/code-generator@${kube_version}
 
-export GO111MODULE=off
-
 bash -x ${CODEGEN_PKG}/generate-groups.sh "deepcopy,client,informer,lister" \
   github.com/argoproj/argo-cd/pkg/client github.com/argoproj/argo-cd/pkg/apis \
   "application:v1alpha1" \

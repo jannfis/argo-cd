@@ -134,7 +134,7 @@ jobs:
           go-version: '1.14.2'
       - name: Install K3S
         env:
-          INSTALL_K3S_VERSION: v1.0.1
+          INSTALL_K3S_VERSION: v0.5.0
         run: |
           set -x
           curl -sfL https://get.k3s.io | sh -
@@ -171,6 +171,7 @@ jobs:
         run: |
           docker pull quay.io/dexidp/dex:v2.22.0
           docker pull argoproj/argo-cd-ci-builder:v1.0.0
+          docker pull redis:5.0.3-alpine
 
       - name: Run E2E server and wait for it being available
         timeout-minutes: 30

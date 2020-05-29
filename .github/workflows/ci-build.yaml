@@ -168,5 +168,4 @@ jobs:
             fi
             count=$((count+1))
           done
-        working-directory: ${{ github.workspace }}/src/github.com/argoproj/argo-cd
       

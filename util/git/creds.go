@@ -174,6 +174,7 @@ func (c SSHCreds) Environ() (io.Closer, []string, error) {
 		args = append(args, "-o", "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null")
 	} else {
 		knownHostsFile := certutil.GetSSHKnownHostsDataPath()
+		log.Debugf("using SSH known hosts file %s", knownHostsFile)
 		args = append(args, "-o", "StrictHostKeyChecking=yes", "-o", fmt.Sprintf("UserKnownHostsFile=%s", knownHostsFile))
 	}
 	env = append(env, []string{fmt.Sprintf("GIT_SSH_COMMAND=%s", strings.Join(args, " "))}...)

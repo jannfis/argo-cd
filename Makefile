@@ -437,6 +437,7 @@ install-tools-local:
 	sudo ./hack/install.sh packr-linux
 	sudo ./hack/install.sh kubectl-linux
 	sudo ./hack/install.sh ksonnet-linux
+	sudo ./hack/install.sh kustomize-linux
 	sudo ./hack/install.sh helm2-linux
 	sudo ./hack/install.sh helm-linux
 	sudo ./hack/install.sh codegen-tools

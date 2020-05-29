@@ -162,6 +162,7 @@ jobs:
         timeout-minutes: 30
         run: |
           set -x
+          netstat -tulpen
           make start-e2e-local 
           # count=1
           # until curl http://localhost:8080/healthz; do

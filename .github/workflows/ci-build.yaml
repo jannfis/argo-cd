@@ -149,6 +149,9 @@ jobs:
           go mod vendor -v
       - name: Install tools required for local execution
         run: make install-tools-local
+      - name: Install goreman
+        run: |
+          go get github.com/mattn/goreman
       - name: Setup git username and email
         run: |
           git config --global user.name "John Doe"

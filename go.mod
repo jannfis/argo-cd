@@ -16,6 +16,7 @@ require (
 	github.com/TomOnTime/utfutil v0.0.0-20180511104225-09c41003ee1d
 	github.com/alicebob/gopher-json v0.0.0-20180125190556-5a6b3ba71ee6 // indirect
 	github.com/alicebob/miniredis v2.5.0+incompatible
+	github.com/argoproj/gitops-engine v0.0.0-00010101000000-000000000000
 	github.com/argoproj/pkg v0.0.0-20200319004004-f46beff7cd54
 	github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e // indirect
 	github.com/auth0/go-jwt-middleware v0.0.0-20170425171159-5493cabe49f7 // indirect
@@ -78,7 +79,6 @@ require (
 	github.com/golangci/goconst v0.0.0-20180610141641-041c5f2b40f3 // indirect
 	github.com/golangci/gocyclo v0.0.0-20180528134321-2becd97e67ee // indirect
 	github.com/golangci/gofmt v0.0.0-20181222123516-0b8337e80d98 // indirect
-	github.com/golangci/golangci-lint v1.10.1 // indirect
 	github.com/golangci/gosec v0.0.0-20190211064107-66fb7fc33547 // indirect
 	github.com/golangci/ineffassign v0.0.0-20190609212857-42439a7714cc // indirect
 	github.com/golangci/lint-1 v0.0.0-20190420132249-ee948d087217 // indirect
@@ -181,7 +181,6 @@ require (
 	golang.org/x/net v0.0.0-20191004110552-13f9640d40b9
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
-	golang.org/x/tools v0.0.0-20190627203933-19ff4fff8850 // indirect
 	golang.org/x/xerrors v0.0.0-20190717185122-a985d3407aa7 // indirect
 	gonum.org/v1/gonum v0.0.0-20190621125449-90b715451587 // indirect
 	gonum.org/v1/netlib v0.0.0-20190331212654-76723241ea4e // indirect
@@ -189,16 +188,18 @@ require (
 	google.golang.org/grpc v1.23.0
 	gopkg.in/go-playground/webhooks.v5 v5.11.0
 	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
-	gopkg.in/src-d/go-git.v4 v4.12.0
+	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/yaml.v2 v2.2.8
 	gopkg.in/yaml.v3 v3.0.0-20190905181640-827449938966 // indirect
 	gotest.tools/gotestsum v0.3.5 // indirect
 	honnef.co/go/tools v0.0.1-2019.2.2 // indirect
 	k8s.io/api v0.16.6
+	k8s.io/apiextensions-apiserver v0.16.6
 	k8s.io/apimachinery v0.16.6
 	k8s.io/cli-runtime v0.16.6 // indirect
 	k8s.io/client-go v11.0.1-0.20190816222228-6d55c1b1f1ca+incompatible
 	k8s.io/cluster-bootstrap v0.0.0 // indirect
+	k8s.io/code-generator v0.16.6
 	k8s.io/cri-api v0.0.0 // indirect
 	k8s.io/gengo v0.0.0-20190822140433-26a664648505 // indirect
 	k8s.io/heapster v1.2.0-beta.1 // indirect
@@ -207,8 +208,9 @@ require (
 	k8s.io/kube-openapi v0.0.0-20191107075043-30be4d16710a
 	k8s.io/kube-proxy v0.0.0 // indirect
 	k8s.io/kube-scheduler v0.0.0 // indirect
+	k8s.io/kubectl v0.16.6
 	k8s.io/kubelet v0.0.0 // indirect
-	k8s.io/kubernetes v1.15.0-alpha.0
+	k8s.io/kubernetes v1.16.6
 	k8s.io/legacy-cloud-providers v0.0.0 // indirect
 	k8s.io/utils v0.0.0-20191114200735-6ca3b61696b6
 	layeh.com/gopher-json v0.0.0-20190114024228-97fed8db8427

@@ -164,7 +164,7 @@ jobs:
           set -x
           make start-e2e-local &
           count=1
-          until curl -x "" -v -f http://127.0.0.1:8080/healthz; do
+          until curl -x "" -v -f http://127.0.0.1:8088/healthz; do
             netstat -tulpen
             sleep 10;
             if test $count -ge 60; then

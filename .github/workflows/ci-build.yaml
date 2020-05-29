@@ -35,6 +35,7 @@ jobs:
         uses: golangci/golangci-lint-action@v1
         with:
           version: v1.26
+          args: --timeout 5m
   test:
     name: Run unit tests for all packages
     runs-on: ubuntu-latest

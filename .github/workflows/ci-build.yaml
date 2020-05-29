@@ -35,8 +35,8 @@ jobs:
         run: mkdir -p ~/go/src/github.com/argoproj
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Create symlink in GOPATH
-        run: ln -s $(pwd) ~/go/src/github.com/argoproj/argo-cd
+        with:
+          path: /home/runner/go/src/github.com/argoproj
       - name: Setup Golang
         uses: actions/setup-go@v1
         with:
@@ -48,9 +48,11 @@ jobs:
         run: |
           git switch -c temporal-pr-branch
           git status
+        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
       - name: Fetch complete history for blame information
         run: |
           git fetch --prune --no-tags --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
       - name: Add ~/go/bin to PATH
         run: echo "::add-path::/home/runner/go/bin"
       - name: Add /usr/local/bin to PATH
@@ -62,12 +64,14 @@ jobs:
           key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
       - name: Install tools required for local execution
         run: make install-tools-local
+        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
       - name: Setup git username and email
         run: |
           git config --global user.name "John Doe"
           git config --global user.email "john.doe@example.com"
       - name: Run all unit tests
         run: make test-local
+        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
   codegen:
     name: Generate dynamic code and check nothing has changed
     runs-on: ubuntu-latest

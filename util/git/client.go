@@ -200,7 +200,6 @@ func newAuth(repoURL string, creds Creds) (transport.AuthMethod, error) {
 			// Set up validation of SSH known hosts for using our ssh_known_hosts
 			// file.
 			auth.HostKeyCallback, err = knownhosts.New(certutil.GetSSHKnownHostsDataPath())
-			log.Debugf("Using SSH known hosts '%s' for callback", certutil.GetSSHKnownHostsDataPath())
 			if err != nil {
 				log.Errorf("Could not set-up SSH known hosts callback: %v", err)
 			}

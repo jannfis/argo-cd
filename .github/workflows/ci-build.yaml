@@ -144,6 +144,11 @@ jobs:
       - name: Install node dependencies
         run: |
           cd ui && yarn install --frozen-lockfile --ignore-optional --non-interactive
+      - name: Build UI code
+        run: |
+          cd ui && yarn test
+          cd ui && NODE_ENV='production' yarn build
+
   test-e2e:
     name: Run end-to-end tests
     runs-on: ubuntu-latest

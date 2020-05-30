@@ -439,6 +439,12 @@ install-tools-local:
 	sudo ./hack/install.sh helm2-linux
 	sudo ./hack/install.sh helm-linux
 
+.PHONY: install-test-tools-local
+install-test-tools-local:
+	go get github.com/kisielk/godepgraph
+	go get github.com/jstemmer/go-junit-report
+	go get github.com/mattn/goreman
+
 .PHONY: install-codegen-tools-local
 install-codegen-tools-local:
 	sudo ./hack/install.sh codegen-tools

@@ -104,6 +104,9 @@ jobs:
           git config --global user.email "john.doe@example.com"
       - name: Download and vendor all required packages
         run: |
+          go get github.com/kisielk/godepgraph
+          go get github.com/jstemmer/go-junit-report
+          go get github.com/mattn/goreman
           go mod download
           go mod vendor
       - name: Run all unit tests
@@ -300,14 +303,14 @@ jobs:
         run: echo "::add-path::/home/runner/go/bin"
       - name: Download Go dependencies
         run: |
+          go get github.com/kisielk/godepgraph
+          go get github.com/jstemmer/go-junit-report
+          go get github.com/mattn/goreman
           go mod download
           go mod vendor
       - name: Install all tools required for building & testing
         run: |
           make install-tools-local
-      - name: Install goreman
-        run: |
-          go get github.com/mattn/goreman
       - name: Setup git username and email
         run: |
           git config --global user.name "John Doe"

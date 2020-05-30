@@ -44,7 +44,6 @@ jobs:
       - name: Download all Go modules
         run: |
           go mod download
-          go mod vendor
       - name: Compile all packages
         run: make build-local
 
@@ -104,11 +103,7 @@ jobs:
           git config --global user.email "john.doe@example.com"
       - name: Download and vendor all required packages
         run: |
-          go get github.com/kisielk/godepgraph
-          go get github.com/jstemmer/go-junit-report
-          go get github.com/mattn/goreman
           go mod download
-          go mod vendor
       - name: Run all unit tests
         run: make test-local
       - name: Generate code coverage artifacts
@@ -142,6 +137,7 @@ jobs:
         run: echo "::add-path::/home/runner/go/bin"
       - name: Download & vendor dependencies
         run: |
+          # We need to vendor go modules for codegen yet
           go mod download
           go mod vendor -v
         working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
@@ -303,11 +299,7 @@ jobs:
         run: echo "::add-path::/home/runner/go/bin"
       - name: Download Go dependencies
         run: |
-          go get github.com/kisielk/godepgraph
-          go get github.com/jstemmer/go-junit-report
-          go get github.com/mattn/goreman
           go mod download
-          go mod vendor
       - name: Install all tools required for building & testing
         run: |
           make install-tools-local

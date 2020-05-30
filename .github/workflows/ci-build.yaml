@@ -139,6 +139,7 @@ jobs:
         id: cache-dependencies
         uses: actions/cache@v1
         with:
+          path: ui/node_modules
           key: ${{ runner.os }}-node-dep-v2-${{ hashFiles('**/yarn.lock') }}
       - name: Install node dependencies
         run: |

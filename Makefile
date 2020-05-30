@@ -438,6 +438,9 @@ install-tools-local:
 	sudo ./hack/install.sh helm2-linux
 	sudo ./hack/install.sh helm-linux
 	sudo ./hack/install.sh codegen-tools
+
+.PHONY: install-go-tools-local
+install-go-tools-local:
 	./hack/install.sh codegen-go-tools
 
 .PHONY: dep-ui

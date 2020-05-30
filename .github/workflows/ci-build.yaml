@@ -119,6 +119,7 @@ jobs:
   codegen:
     name: Check changes to generated code
     runs-on: ubuntu-latest
+    needs: build-go
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

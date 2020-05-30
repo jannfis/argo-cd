@@ -190,7 +190,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        if: ${{ secrets.SONAR_TOKEN }} != ""
+        if: ${{ secrets.SONAR_TOKEN != "" }}
   test-e2e:
     name: Run end-to-end tests
     runs-on: ubuntu-latest

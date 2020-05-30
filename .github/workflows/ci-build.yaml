@@ -152,7 +152,7 @@ jobs:
           NODE_ENV: production
         working-directory: ui/
       - name: Run ESLint
-        run: npm run eslint:github-actions
+        run: yarn lint
         working-directory: ui/
 
   test-e2e:

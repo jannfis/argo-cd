@@ -151,6 +151,7 @@ clientgen:
 
 .PHONY: codegen-local
 codegen-local: mod-vendor-local gogen protogen clientgen openapigen manifests-local
+	rm -rf vendor/
 
 .PHONY: codegen
 codegen:

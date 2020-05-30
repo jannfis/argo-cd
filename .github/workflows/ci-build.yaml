@@ -8,26 +8,26 @@ on:
       - 'master'
 
 jobs:
-  build-go:
-    name: Build & cache Go code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Golang
-        uses: actions/setup-go@v1
-        with:
-          go-version: '1.14.2'
-      - name: Restore go build cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.cache/go-build
-          key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
-      - name: Download all Go modules
-        run: |
-          go mod download
-      - name: Compile all packages
-        run: make build-local
+  # build-go:
+  #   name: Build & cache Go code
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #     - name: Setup Golang
+  #       uses: actions/setup-go@v1
+  #       with:
+  #         go-version: '1.14.2'
+  #     - name: Restore go build cache
+  #       uses: actions/cache@v1
+  #       with:
+  #         path: ~/.cache/go-build
+  #         key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
+  #     - name: Download all Go modules
+  #       run: |
+  #         go mod download
+  #     - name: Compile all packages
+  #       run: make build-local
   lint-go:
     name: Lint Go code
     runs-on: ubuntu-latest
@@ -42,8 +42,6 @@ jobs:
   test-go:
     name: Run unit tests for Go packages
     runs-on: ubuntu-latest
-    needs:
-      - build-go
     steps:
       - name: Create checkout directory
         run: mkdir -p ~/go/src/github.com/argoproj
@@ -83,6 +81,8 @@ jobs:
       - name: Download and vendor all required packages
         run: |
           go mod download
+      - name: Compile all packages
+        run: make build-local
       - name: Run all unit tests
         run: make test-local
       - name: Generate code coverage artifacts
@@ -229,8 +229,8 @@ jobs:
   test-e2e:
     name: Run end-to-end tests
     runs-on: ubuntu-latest
-    needs: 
-      - build-go
+    # needs: 
+    #   - build-go
     env:
       GOPATH: /home/runner/go
       ARGOCD_FAKE_IN_CLUSTER: "true"

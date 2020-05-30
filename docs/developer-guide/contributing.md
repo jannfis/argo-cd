@@ -114,6 +114,11 @@ The Docker container for the virtualized toolchain will use the following local 
 * `~/.kube` - Your Kubernetes client configuration (no modifications)
 * `/tmp` - Your system's temp directory (modifications expected)
 
+!!!note
+    Although ArgoCD recently migrated its build system to use Go modules instead of Go dep,
+    it's not yet possible to build outside `$GOPATH/src/github.com/argoproj/argo-cd` so this
+    must be your source directory for now.
+
 ## Setting up your development environment
 
 The following steps are required no matter whether you chose to use a virtualized or a local toolchain.

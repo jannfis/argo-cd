@@ -135,7 +135,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '11.15.0'
-
+      - name: Restore node dependency cache
+        id: cache-dependencies
+        uses: actions/cache@v1
+        with:
+          key: ${{ runner.os }}-node-dep-v2-${{ hashFiles('**/yarn.lock') }}
+      - name: Install node dependencies
+        run: |
+          cd ui && yarn install --frozen-lockfile --ignore-optional --non-interactive
   test-e2e:
     name: Run end-to-end tests
     runs-on: ubuntu-latest

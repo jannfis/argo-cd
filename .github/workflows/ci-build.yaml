@@ -25,6 +25,7 @@ jobs:
         run: |
           go mod tidy
           git diff --exit-code -- .
+
   build-go:
     name: Build & cache Go code
     runs-on: ubuntu-latest
@@ -43,8 +44,10 @@ jobs:
       - name: Download all Go modules
         run: |
           go mod download
+          go mod vendor
       - name: Compile all packages
         run: make build-local
+
   lint-go:
     name: Lint Go code
     runs-on: ubuntu-latest
@@ -56,6 +59,7 @@ jobs:
         with:
           version: v1.26
           args: --timeout 5m
+
   test-go:
     name: Run unit tests for Go packages
     runs-on: ubuntu-latest
@@ -101,6 +105,7 @@ jobs:
       - name: Download and vendor all required packages
         run: |
           go mod download
+          go mod vendor
       - name: Run all unit tests
         run: make test-local
       - name: Generate code coverage artifacts
@@ -113,6 +118,7 @@ jobs:
         with:
           name: test-results
           path: test-results/
+
   codegen:
     name: Check changes to generated code
     runs-on: ubuntu-latest
@@ -155,6 +161,7 @@ jobs:
           set -xo pipefail
           git diff --exit-code -- . ':!go.sum' ':!go.mod' ':!assets/swagger.json' | tee codegen.patch
         working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
+
   build-ui:
     name: Build, test & lint UI code
     runs-on: ubuntu-latest
@@ -184,6 +191,7 @@ jobs:
       - name: Run ESLint
         run: yarn lint
         working-directory: ui/
+
   analyze:
     name: Perform static code analysis 
     runs-on: ubuntu-latest
@@ -228,6 +236,8 @@ jobs:
           SCANNER_PATH: /tmp/cache/scanner
           OS: linux
         run: |
+            # We do not use the provided action, because it does contain an old
+            # version of the scanner, and also takes time to build.
             set -e
             mkdir -p ${SCANNER_PATH}
             export SONAR_USER_HOME=${SCANNER_PATH}/.sonar
@@ -244,8 +254,8 @@ jobs:
             export NODE_PATH=${PWD}/ui/node_modules
 
             ${SCANNER_PATH}/sonar-scanner-${SCANNER_VERSION}-${OS}/bin/sonar-scanner
-
         if: env.sonar_secret != ''
+
   test-e2e:
     name: Run end-to-end tests
     runs-on: ubuntu-latest
@@ -290,8 +300,8 @@ jobs:
         run: echo "::add-path::/home/runner/go/bin"
       - name: Download Go dependencies
         run: |
-          # No vendoring here
           go mod download
+          go mod vendor
       - name: Install all tools required for building & testing
         run: |
           make install-tools-local
@@ -302,13 +312,11 @@ jobs:
         run: |
           git config --global user.name "John Doe"
           git config --global user.email "john.doe@example.com"
-
       - name: Pull Docker image required for tests
         run: |
           docker pull quay.io/dexidp/dex:v2.22.0
           docker pull argoproj/argo-cd-ci-builder:v1.0.0
           docker pull redis:5.0.3-alpine
-
       - name: Run E2E server and wait for it being available
         timeout-minutes: 30
         run: |
@@ -327,7 +335,6 @@ jobs:
             fi
             count=$((count+1))
           done
-      
       - name: Run E2E testsuite
         run: |
           set -x

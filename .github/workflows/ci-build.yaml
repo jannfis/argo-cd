@@ -23,13 +23,13 @@ jobs:
         with:
           path: ~/.cache/go-build
           key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
+      - name: Download all Go modules
+        run: |
+          go mod download
       - name: Check for tidyness of go.mod and go.sum
         run: |
           go mod tidy
           git diff --exit-code -- .
-      - name: Download all Go modules
-        run: |
-          go mod download
       - name: Compile all packages
         run: make build-local
   lint-go:

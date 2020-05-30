@@ -146,8 +146,11 @@ jobs:
           cd ui && yarn install --frozen-lockfile --ignore-optional --non-interactive
       - name: Build UI code
         run: |
-          cd ui && yarn test
-          cd ui && NODE_ENV='production' yarn build
+          yarn test
+          yarn build
+        env:
+          NODE_ENV: production
+        working-directory: ui/
 
   test-e2e:
     name: Run end-to-end tests

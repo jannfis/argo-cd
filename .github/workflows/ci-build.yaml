@@ -167,9 +167,9 @@ jobs:
   analyze:
     name: Perform static code analysis 
     runs-on: ubuntu-latest
-    # needs:
-    #   - test-go
-    #   - build-ui
+    needs:
+      - test-go
+      - build-ui
     env:
       sonar_secret: ${{ secrets.SONAR_TOKEN }}
     steps:

@@ -437,6 +437,9 @@ install-tools-local:
 	sudo ./hack/install.sh kustomize-linux
 	sudo ./hack/install.sh helm2-linux
 	sudo ./hack/install.sh helm-linux
+
+.PHONY: install-codegen-tools-local
+install-codegen-tools-local:
 	sudo ./hack/install.sh codegen-tools
 
 .PHONY: install-go-tools-local

@@ -23,16 +23,6 @@ jobs:
         with:
           path: ~/.cache/go-build
           key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
-      - name: Restore tool cache
-        uses: actions/cache@v1
-        id: tools-cache
-        with:
-          path: /usr/local/bin
-          key: ${{runner.os }}-tools-v1-${{ hashFiles('**/hack/tool-versions.sh') }}
-      - name: Install all tools required for building & testing
-        run: |
-          make install-tools-local
-        if: steps.tools-cache.outputs.cache-hit != 'true'
       - name: Download all Go modules
         run: |
           go mod download
@@ -84,19 +74,9 @@ jobs:
         with:
           path: ~/.cache/go-build
           key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
-
-      - name: Restore tool cache
-        uses: actions/cache@v1
-        id: tools-cache
-        with:
-          path: /usr/local/bin
-          key: ${{runner.os }}-tools-v1-${{ hashFiles('**/hack/tool-versions.sh') }}
-
       - name: Install all tools required for building & testing
         run: |
           make install-tools-local
-        if: steps.tools-cache.outputs.cache-hit != 'true'
-
       - name: Setup git username and email
         run: |
           git config --global user.name "John Doe"
@@ -140,19 +120,9 @@ jobs:
           go mod download
           go mod vendor -v
         working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
-      - name: Restore tool cache
-        uses: actions/cache@v1
-        id: tools-cache
-        with:
-          path: /usr/local/bin
-          key: ${{runner.os }}-tools-v1-${{ hashFiles('**/hack/tool-versions.sh') }}
-      - name: Install all tools required for building & testing
+      - name: Install toolchain for codegen
         run: |
-          make install-tools-local
-        if: steps.tools-cache.outputs.cache-hit != 'true'
-        working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
-      - name: Install additional Go tools for codegen
-        run: |
+          make install-codegen-tools-local
           make install-go-tools-local
         working-directory: /home/runner/go/src/github.com/argoproj/argo-cd
       - name: Initialize local Helm
@@ -306,16 +276,9 @@ jobs:
         run: |
           # No vendoring here
           go mod download
-      - name: Restore tool cache
-        uses: actions/cache@v1
-        id: tools-cache
-        with:
-          path: /usr/local/bin
-          key: ${{runner.os }}-tools-v1-${{ hashFiles('hack/tool-versions.sh') }}
       - name: Install all tools required for building & testing
         run: |
           make install-tools-local
-        if: steps.tools-cache.outputs.cache-hit != 'true'
       - name: Install goreman
         run: |
           go get github.com/mattn/goreman

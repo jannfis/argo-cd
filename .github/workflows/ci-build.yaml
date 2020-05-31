@@ -96,7 +96,7 @@ jobs:
           key: ${{ runner.os }}-go-build-v1-${{ github.run_id }}
       - name: Install all tools required for building & testing
         run: |
-          make install-tools-local
+          make install-test-tools-local
       - name: Setup git username and email
         run: |
           git config --global user.name "John Doe"
@@ -303,7 +303,7 @@ jobs:
           go get github.com/mattn/goreman
       - name: Install all tools required for building & testing
         run: |
-          make install-tools-local
+          make install-test-tools-local
       - name: Setup git username and email
         run: |
           git config --global user.name "John Doe"

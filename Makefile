@@ -429,21 +429,18 @@ show-go-version:
 	@echo -n "Docker Go version: "
 	$(call run-in-test-client,go version)
 
-# Installs all tools required to build and test ArgoCD locally
+
 .PHONY: install-tools-local
-install-tools-local:
+install-tools-local: install-test-tools-local install-codegen-tools-local install-go-tools-local
+
+# Installs all tools required to build and test ArgoCD locally
+.PHONY: install-linux-tools-local
+install-test-tools-local:
 	sudo ./hack/install.sh packr-linux
-	sudo ./hack/install.sh kubectl-linux
 	sudo ./hack/install.sh ksonnet-linux
 	sudo ./hack/install.sh kustomize-linux
 	sudo ./hack/install.sh helm2-linux
 	sudo ./hack/install.sh helm-linux
-
-.PHONY: install-test-tools-local
-install-test-tools-local:
-	go get github.com/kisielk/godepgraph
-	go get github.com/jstemmer/go-junit-report
-	go get github.com/mattn/goreman
 
 .PHONY: install-codegen-tools-local
 install-codegen-tools-local:

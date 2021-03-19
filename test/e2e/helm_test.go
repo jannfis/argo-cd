@@ -426,7 +426,7 @@ func TestHelmRepoDiffLocal(t *testing.T) {
 		Expect(SyncStatusIs(SyncStatusCodeSynced)).
 		And(func(app *Application) {
 			_ = os.Setenv("XDG_CONFIG_HOME", helmTmp)
-			FailOnErr(Run("", "helm", "repo", "add", "custom-repo", RepoURL(RepoURLTypeHelm),
+			FailOnErr(Run("", "helm", "repo", "add", "custom-repo", GetEnvWithDefault("ARGOCD_E2E_HELM_SERVICE", RepoURL(RepoURLTypeHelm)),
 				"--username", GitUsername,
 				"--password", GitPassword,
 				"--cert-file", "../fixture/certs/argocd-test-client.crt",

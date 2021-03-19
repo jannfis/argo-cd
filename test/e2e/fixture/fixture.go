@@ -98,7 +98,7 @@ func getKubeConfig(configPath string, overrides clientcmd.ConfigOverrides) *rest
 	return restConfig
 }
 
-func getEnvWithDefault(envName, defaultValue string) string {
+func GetEnvWithDefault(envName, defaultValue string) string {
 	r := os.Getenv(envName)
 	if r == "" {
 		return defaultValue
@@ -132,9 +132,9 @@ func init() {
 	KubeClientset = kubernetes.NewForConfigOrDie(config)
 	DynamicClientset = dynamic.NewForConfigOrDie(config)
 
-	apiServerAddress = getEnvWithDefault(argocdclient.EnvArgoCDServer, defaultApiServer)
-	adminUsername = getEnvWithDefault(EnvAdminUsername, defaultAdminUsername)
-	adminPassword = getEnvWithDefault(EnvAdminPassword, defaultAdminPassword)
+	apiServerAddress = GetEnvWithDefault(argocdclient.EnvArgoCDServer, defaultApiServer)
+	adminUsername = GetEnvWithDefault(EnvAdminUsername, defaultAdminUsername)
+	adminPassword = GetEnvWithDefault(EnvAdminPassword, defaultAdminPassword)
 
 	tlsTestResult, err := grpcutil.TestTLS(apiServerAddress)
 	CheckError(err)
@@ -195,29 +195,29 @@ func RepoURL(urlType RepoURLType) string {
 	switch urlType {
 	// Git server via SSH
 	case RepoURLTypeSSH:
-		return getEnvWithDefault(EnvRepoURLTypeSSH, "ssh://root@localhost:2222/tmp/argo-e2e/testdata.git")
+		return GetEnvWithDefault(EnvRepoURLTypeSSH, "ssh://root@localhost:2222/tmp/argo-e2e/testdata.git")
 	// Git submodule repo
 	case RepoURLTypeSSHSubmodule:
-		return getEnvWithDefault(EnvRepoURLTypeSSHSubmodule, "ssh://root@localhost:2222/tmp/argo-e2e/submodule.git")
+		return GetEnvWithDefault(EnvRepoURLTypeSSHSubmodule, "ssh://root@localhost:2222/tmp/argo-e2e/submodule.git")
 	// Git submodule parent repo
 	case RepoURLTypeSSHSubmoduleParent:
-		return getEnvWithDefault(EnvRepoURLTypeSSHSubmoduleParent, "ssh://root@localhost:2222/tmp/argo-e2e/submoduleParent.git")
+		return GetEnvWithDefault(EnvRepoURLTypeSSHSubmoduleParent, "ssh://root@localhost:2222/tmp/argo-e2e/submoduleParent.git")
 	// Git server via HTTPS
 	case RepoURLTypeHTTPS:
-		return getEnvWithDefault(EnvRepoURLTypeHTTPS, "https://localhost:9443/argo-e2e/testdata.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPS, "https://localhost:9443/argo-e2e/testdata.git")
 	// Git server via HTTPS - Client Cert protected
 	case RepoURLTypeHTTPSClientCert:
-		return getEnvWithDefault(EnvRepoURLTypeHTTPSClientCert, "https://localhost:9444/argo-e2e/testdata.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSClientCert, "https://localhost:9444/argo-e2e/testdata.git")
 	case RepoURLTypeHTTPSSubmodule:
-		return getEnvWithDefault(EnvRepoURLTypeHTTPSSubmodule, "https://localhost:9443/argo-e2e/submodule.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmodule, "https://localhost:9443/argo-e2e/submodule.git")
 		// Git submodule parent repo
 	case RepoURLTypeHTTPSSubmoduleParent:
-		return getEnvWithDefault(EnvRepoURLTypeHTTPSSubmoduleParent, "https://localhost:9443/argo-e2e/submoduleParent.git")
+		return GetEnvWithDefault(EnvRepoURLTypeHTTPSSubmoduleParent, "https://localhost:9443/argo-e2e/submoduleParent.git")
 	// Default - file based Git repository
 	case RepoURLTypeHelm:
-		return getEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/argo-e2e/testdata.git/helm-repo")
+		return GetEnvWithDefault(EnvRepoURLTypeHelm, "https://localhost:9444/argo-e2e/testdata.git/helm-repo")
 	default:
-		return getEnvWithDefault(EnvRepoURLDefault, fmt.Sprintf("file://%s", repoDirectory()))
+		return GetEnvWithDefault(EnvRepoURLDefault, fmt.Sprintf("file://%s", repoDirectory()))
 	}
 }
 
@@ -558,8 +558,8 @@ func CreateSubmoduleRepos(repoType string) {
 	FailOnErr(Run(submoduleDirectory(), "git", "commit", "-q", "-m", "initial commit"))
 
 	if IsRemote() {
-		FailOnErr(Run(repoDirectory(), "git", "remote", "add", "origin", os.Getenv("ARGOCD_E2E_GIT_SERVICE")))
-		FailOnErr(Run(repoDirectory(), "git", "push", "origin", "master", "-f"))
+		FailOnErr(Run(submoduleDirectory(), "git", "remote", "add", "origin", os.Getenv("ARGOCD_E2E_GIT_SERVICE_SUBMODULE")))
+		FailOnErr(Run(submoduleDirectory(), "git", "push", "origin", "master", "-f"))
 	}
 
 	// set-up submodule parent repo
@@ -576,8 +576,14 @@ func CreateSubmoduleRepos(repoType string) {
 	FailOnErr(Run(submoduleParentDirectory(), "git", "add", "--all"))
 	FailOnErr(Run(submoduleParentDirectory(), "git", "commit", "-q", "-m", "commit with submodule"))
 
+	if IsRemote() {
+		FailOnErr(Run(submoduleParentDirectory(), "git", "remote", "add", "origin", os.Getenv("ARGOCD_E2E_GIT_SERVICE_SUBMODULE_PARENT")))
+		FailOnErr(Run(submoduleParentDirectory(), "git", "push", "origin", "master", "-f"))
+	}
 }
 
+// RestartRepoServer performs a restart of the repo server deployment and waits
+// until the rollout has completed.
 func RestartRepoServer() {
 	if IsRemote() {
 		log.Infof("Waiting for repo server to restart")
@@ -586,10 +592,20 @@ func RestartRepoServer() {
 	}
 }
 
+// RestartAPIServer performs a restart of the API server deployemt and waits
+// until the rollout has completed.
 func RestartAPIServer() {
 	if IsRemote() {
 		log.Infof("Waiting for API server to restart")
 		FailOnErr(Run("", "kubectl", "rollout", "restart", "deployment", "argocd-server"))
 		FailOnErr(Run("", "kubectl", "rollout", "status", "deployment", "argocd-server"))
+	}
+}
+
+func LocalOrRemotePath(base string) string {
+	if IsRemote() {
+		return base + "/remote"
+	} else {
+		return base + "/local"
 	}
 }

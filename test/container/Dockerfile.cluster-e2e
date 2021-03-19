@@ -67,10 +67,22 @@ RUN useradd -l -u ${UID} -d /home/user -s /bin/bash user && \
     HOME=/home/user git commit -a -m "Initial commit" && \
     HOME=/home/user git remote add origin file:///tmp/argo-e2e/testdata.git && \
     HOME=/home/user git push origin master && \
+    mkdir -p /tmp/argo-e2e/submodule.git && \
+    cd /tmp/argo-e2e/submodule.git && \
+    HOME=/home/user git init --bare && \
+    mkdir -p /tmp/argo-e2e/submoduleParent.git && \
+    cd /tmp/argo-e2e/submoduleParent.git && \
+    HOME=/home/user git init --bare && \
     chown -R user /tmp/argo-e2e/testdata.git && \
+    chown -R user /tmp/argo-e2e/submodule.git && \
+    chown -R user /tmp/argo-e2e/submoduleParent.git && \
     ln -s /usr/libexec/git-core /usr/lib/git-core
 
 RUN echo "[http]" >> /tmp/argo-e2e/testdata.git/config && \
     echo "  receivepack = true" >> /tmp/argo-e2e/testdata.git/config 
+RUN echo "[http]" >> /tmp/argo-e2e/submodule.git/config && \
+    echo "  receivepack = true" >> /tmp/argo-e2e/submodule.git/config 
+RUN echo "[http]" >> /tmp/argo-e2e/submoduleParent.git/config && \
+    echo "  receivepack = true" >> /tmp/argo-e2e/submoduleParent.git/config 
 
 ENTRYPOINT ["/usr/local/bin/uid_entrypoint.sh"]

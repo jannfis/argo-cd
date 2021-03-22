@@ -87,6 +87,12 @@ const (
 	GpgGoodKeyID                    = "D56C4FCA57A46444"
 )
 
+// TestNamespace returns the namespace where Argo CD E2E test instance will be
+// running in.
+func TestNamespace() string {
+	return GetEnvWithDefault("ARGOCD_E2E_NAMESPACE", ArgoCDNamespace)
+}
+
 // getKubeConfig creates new kubernetes client config using specified config path and config overrides variables
 func getKubeConfig(configPath string, overrides clientcmd.ConfigOverrides) *rest.Config {
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
@@ -235,8 +241,8 @@ func CreateSecret(username, password string) string {
 	FailOnErr(Run("", "kubectl", "create", "secret", "generic", secretName,
 		"--from-literal=username="+username,
 		"--from-literal=password="+password,
-		"-n", ArgoCDNamespace))
-	FailOnErr(Run("", "kubectl", "label", "secret", secretName, testingLabel+"=true", "-n", ArgoCDNamespace))
+		"-n", TestNamespace()))
+	FailOnErr(Run("", "kubectl", "label", "secret", secretName, testingLabel+"=true", "-n", TestNamespace()))
 	return secretName
 }
 
@@ -247,13 +253,13 @@ func updateSettingConfigMap(updater func(cm *corev1.ConfigMap) error) {
 
 // Updates a given config map in argocd-e2e namespace
 func updateGenericConfigMap(name string, updater func(cm *corev1.ConfigMap) error) {
-	cm, err := KubeClientset.CoreV1().ConfigMaps(ArgoCDNamespace).Get(context.Background(), name, v1.GetOptions{})
+	cm, err := KubeClientset.CoreV1().ConfigMaps(TestNamespace()).Get(context.Background(), name, v1.GetOptions{})
 	errors.CheckError(err)
 	if cm.Data == nil {
 		cm.Data = make(map[string]string)
 	}
 	errors.CheckError(updater(cm))
-	_, err = KubeClientset.CoreV1().ConfigMaps(ArgoCDNamespace).Update(context.Background(), cm, v1.UpdateOptions{})
+	_, err = KubeClientset.CoreV1().ConfigMaps(TestNamespace()).Update(context.Background(), cm, v1.UpdateOptions{})
 	errors.CheckError(err)
 }
 
@@ -331,10 +337,10 @@ func SetRepos(repos ...settings.RepositoryCredentials) {
 }
 
 func SetProjectSpec(project string, spec v1alpha1.AppProjectSpec) {
-	proj, err := AppClientset.ArgoprojV1alpha1().AppProjects(ArgoCDNamespace).Get(context.Background(), project, v1.GetOptions{})
+	proj, err := AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Get(context.Background(), project, v1.GetOptions{})
 	errors.CheckError(err)
 	proj.Spec = spec
-	_, err = AppClientset.ArgoprojV1alpha1().AppProjects(ArgoCDNamespace).Update(context.Background(), proj, v1.UpdateOptions{})
+	_, err = AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).Update(context.Background(), proj, v1.UpdateOptions{})
 	errors.CheckError(err)
 }
 
@@ -345,12 +351,12 @@ func EnsureCleanState(t *testing.T) {
 	policy := v1.DeletePropagationBackground
 	// delete resources
 	// kubectl delete apps --all
-	CheckError(AppClientset.ArgoprojV1alpha1().Applications(ArgoCDNamespace).DeleteCollection(context.Background(), v1.DeleteOptions{PropagationPolicy: &policy}, v1.ListOptions{}))
+	CheckError(AppClientset.ArgoprojV1alpha1().Applications(TestNamespace()).DeleteCollection(context.Background(), v1.DeleteOptions{PropagationPolicy: &policy}, v1.ListOptions{}))
 	// kubectl delete appprojects --field-selector metadata.name!=default
-	CheckError(AppClientset.ArgoprojV1alpha1().AppProjects(ArgoCDNamespace).DeleteCollection(context.Background(),
+	CheckError(AppClientset.ArgoprojV1alpha1().AppProjects(TestNamespace()).DeleteCollection(context.Background(),
 		v1.DeleteOptions{PropagationPolicy: &policy}, v1.ListOptions{FieldSelector: "metadata.name!=default"}))
 	// kubectl delete secrets -l e2e.argoproj.io=true
-	CheckError(KubeClientset.CoreV1().Secrets(ArgoCDNamespace).DeleteCollection(context.Background(),
+	CheckError(KubeClientset.CoreV1().Secrets(TestNamespace()).DeleteCollection(context.Background(),
 		v1.DeleteOptions{PropagationPolicy: &policy}, v1.ListOptions{LabelSelector: testingLabel + "=true"}))
 
 	FailOnErr(Run("", "kubectl", "delete", "ns", "-l", testingLabel+"=true", "--field-selector", "status.phase=Active", "--wait=false"))
@@ -545,7 +551,7 @@ func Declarative(filename string, values interface{}) (string, error) {
 	_, err = tmpFile.WriteString(Tmpl(string(bytes), values))
 	CheckError(err)
 
-	return Run("", "kubectl", "-n", ArgoCDNamespace, "apply", "-f", tmpFile.Name())
+	return Run("", "kubectl", "-n", TestNamespace(), "apply", "-f", tmpFile.Name())
 }
 
 func CreateSubmoduleRepos(repoType string) {
@@ -587,8 +593,13 @@ func CreateSubmoduleRepos(repoType string) {
 func RestartRepoServer() {
 	if IsRemote() {
 		log.Infof("Waiting for repo server to restart")
-		FailOnErr(Run("", "kubectl", "rollout", "restart", "deployment", "argocd-repo-server"))
-		FailOnErr(Run("", "kubectl", "rollout", "status", "deployment", "argocd-repo-server"))
+		prefix := os.Getenv("ARGOCD_E2E_NAME_PREFIX")
+		workload := "argocd-repo-server"
+		if prefix != "" {
+			workload = prefix + "-repo-server"
+		}
+		FailOnErr(Run("", "kubectl", "rollout", "restart", "deployment", workload))
+		FailOnErr(Run("", "kubectl", "rollout", "status", "deployment", workload))
 	}
 }
 
@@ -597,11 +608,18 @@ func RestartRepoServer() {
 func RestartAPIServer() {
 	if IsRemote() {
 		log.Infof("Waiting for API server to restart")
-		FailOnErr(Run("", "kubectl", "rollout", "restart", "deployment", "argocd-server"))
-		FailOnErr(Run("", "kubectl", "rollout", "status", "deployment", "argocd-server"))
+		prefix := os.Getenv("ARGOCD_E2E_NAME_PREFIX")
+		workload := "argocd-server"
+		if prefix != "" {
+			workload = prefix + "-server"
+		}
+		FailOnErr(Run("", "kubectl", "rollout", "restart", "deployment", workload))
+		FailOnErr(Run("", "kubectl", "rollout", "status", "deployment", workload))
 	}
 }
 
+// LocalOrRemotePath selects a path for a given application based on whether
+// tests are running local or remote.
 func LocalOrRemotePath(base string) string {
 	if IsRemote() {
 		return base + "/remote"

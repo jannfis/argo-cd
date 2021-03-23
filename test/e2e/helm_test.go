@@ -351,7 +351,7 @@ func TestHelmWithDependencies(t *testing.T) {
 }
 
 func TestHelm2WithDependencies(t *testing.T) {
-	SkipOnEnv(t, "HELM")
+	SkipOnEnv(t, "HELM", "HELM2")
 	testHelmWithDependencies(t, "helm2-with-dependencies", false)
 }
 

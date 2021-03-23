@@ -604,6 +604,7 @@ func testEdgeCasesApplicationResources(t *testing.T, appPath string, statusCode 
 }
 
 func TestKsonnetApp(t *testing.T) {
+	SkipOnEnv(t, "KSONNET")
 	Given(t).
 		Path("ksonnet").
 		Env("prod").

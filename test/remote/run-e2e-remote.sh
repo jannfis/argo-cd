@@ -6,6 +6,8 @@ if test "${ARGOCD_SERVER}" = ""; then
 	exit 1
 fi
 
+export ARGOCD_E2E_TEST_TIMEOUT=2h
+
 # ARGOCD_E2E_REMOTE must be set to 'true' in order for remote tests to work
 export ARGOCD_E2E_REMOTE=true
 
@@ -29,7 +31,11 @@ export ARGOCD_E2E_SKIP_GPG=true
 # Some tests do not work OOTB with OpenShift
 export ARGOCD_E2E_SKIP_OPENSHIFT=true
 # Skip Helm tests
-export ARGOCD_E2E_SKIP_HELM=true
+#export ARGOCD_E2E_SKIP_HELM=true
+# Skip Helm v2 related tests
+export ARGOCD_E2E_SKIP_HELM2=true
+# Skip Ksonnet tests
+export ARGOCD_E2E_SKIP_KSONNET=true
 
 # Unauthenticated URLs for pushing from CI
 #

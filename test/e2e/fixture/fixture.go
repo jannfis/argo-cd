@@ -627,3 +627,13 @@ func LocalOrRemotePath(base string) string {
 		return base + "/local"
 	}
 }
+
+// SkipOnEnv allows to skip a test when a given environment variable is set.
+// Environment variable names follow the ARGOCD_E2E_SKIP_<suffix> pattern,
+// and must be set to the string value 'true' in order to skip a test.
+func SkipOnEnv(t *testing.T, suffix string) {
+	e := os.Getenv("ARGOCD_E2E_SKIP_" + suffix)
+	if e == "true" {
+		t.Skip()
+	}
+}

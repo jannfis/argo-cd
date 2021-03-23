@@ -27,6 +27,9 @@ spec:
         - containerPort: 9081
         - containerPort: 9443
         - containerPort: 9444
+        securityContext:
+          capabilities:
+            add: ["SYS_CHROOT"]
 ---
 apiVersion: v1
 kind: Service

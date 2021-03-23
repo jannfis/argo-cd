@@ -36,18 +36,16 @@ COPY ./test/fixture/certs/argocd-e2e-server.key /etc/certs/argocd-test-server.ke
 COPY ./test/fixture/certs/argocd-test-ca.crt /etc/certs/argocd-test-ca.crt
 
 # Entrypoint is required for container's user management
-COPY ./test/container/uid_entrypoint.sh /usr/local/bin
-COPY ./test/container/Procfile.cluster-e2e /Procfile
+COPY ./test/remote/uid_entrypoint.sh /usr/local/bin
+COPY ./test/remote/Procfile /Procfile
 
 # We need goreman
 COPY --from=go /go/bin/goreman /usr/local/bin/goreman
 
 COPY ./test/e2e/testdata/ /app/config/testdata/
 
-ARG UID
-
 # Prepare user configuration & build environments
-RUN useradd -l -u ${UID} -d /home/user -s /bin/bash user && \
+RUN useradd -l -u 1000 -d /home/user -s /bin/bash user && \
     echo "user ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/user && \
     mkdir -p /home/user && \
     HOME=/home/user git config --global user.name "ArgoCD Test User" && \

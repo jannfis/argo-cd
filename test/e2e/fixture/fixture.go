@@ -1,7 +1,9 @@
 package fixture
 
 import (
+	"bufio"
 	"context"
+	goerrors "errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -68,6 +70,7 @@ var (
 	apiServerAddress    string
 	token               string
 	plainText           bool
+	testsRun            map[string]bool
 )
 
 type RepoURLType string
@@ -167,6 +170,27 @@ func init() {
 	plainText = !tlsTestResult.TLS
 
 	log.WithFields(log.Fields{"apiServerAddress": apiServerAddress}).Info("initialized")
+
+	// Preload a list of tests that should be skipped
+	testsRun = make(map[string]bool)
+	rf := os.Getenv("ARGOCD_E2E_RECORD")
+	if rf == "" {
+		return
+	}
+	f, err := os.Open(rf)
+	if err != nil {
+		if goerrors.Is(err, os.ErrNotExist) {
+			return
+		} else {
+			panic(fmt.Sprintf("Could not read record file %s: %v", rf, err))
+		}
+	}
+	defer f.Close()
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		testsRun[scanner.Text()] = true
+	}
+
 }
 
 func Name() string {
@@ -345,6 +369,12 @@ func SetProjectSpec(project string, spec v1alpha1.AppProjectSpec) {
 }
 
 func EnsureCleanState(t *testing.T) {
+	// In large scenarios, we can skip tests that already run
+	SkipIfAlreadyRun(t)
+	// Register this test after it has been run & was successfull
+	t.Cleanup(func() {
+		RecordTestRun(t)
+	})
 
 	start := time.Now()
 
@@ -637,5 +667,34 @@ func SkipOnEnv(t *testing.T, suffixes ...string) {
 		if e == "true" {
 			t.Skip()
 		}
+	}
+}
+
+// SkipIfAlreadyRun skips a test if it has been already run by a previous
+// test cycle and was recorded.
+func SkipIfAlreadyRun(t *testing.T) {
+	if _, ok := testsRun[t.Name()]; ok {
+		t.Skip()
+	}
+}
+
+// RecordTestRun records a test that has been run successfully to a text file,
+// so that it can be automatically skipped if requested.
+func RecordTestRun(t *testing.T) {
+	if t.Skipped() || t.Failed() {
+		return
+	}
+	rf := os.Getenv("ARGOCD_E2E_RECORD")
+	if rf == "" {
+		return
+	}
+	log.Infof("Registering test execution at %s", rf)
+	f, err := os.OpenFile(rf, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		t.Fatalf("could not open record file %s: %v", rf, err)
+	}
+	defer f.Close()
+	if _, err := f.WriteString(fmt.Sprintf("%s\n", t.Name())); err != nil {
+		t.Fatalf("could not write to %s: %v", rf, err)
 	}
 }

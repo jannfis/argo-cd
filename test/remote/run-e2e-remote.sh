@@ -7,6 +7,7 @@ if test "${ARGOCD_SERVER}" = ""; then
 fi
 
 export ARGOCD_E2E_TEST_TIMEOUT=2h
+export ARGOCD_E2E_DEFAULT_TIMEOUT=30
 
 # ARGOCD_E2E_REMOTE must be set to 'true' in order for remote tests to work
 export ARGOCD_E2E_REMOTE=true

@@ -6,11 +6,14 @@ if test "${ARGOCD_SERVER}" = ""; then
 	exit 1
 fi
 
-export ARGOCD_E2E_TEST_TIMEOUT=2h
-export ARGOCD_E2E_DEFAULT_TIMEOUT=30
-
 # ARGOCD_E2E_REMOTE must be set to 'true' in order for remote tests to work
 export ARGOCD_E2E_REMOTE=true
+
+# The timeout for running the test suite (duration)
+export ARGOCD_E2E_TEST_TIMEOUT=2h
+
+# The default timeout for certain operations (such as sync)
+export ARGOCD_E2E_DEFAULT_TIMEOUT=30
 
 # Set ARGOCD_E2E_NAMESPACE to the namespace the Argo CD we're testing against is
 # running in. Defaults to "argocd-e2e"
@@ -20,23 +23,25 @@ export ARGOCD_E2E_NAMESPACE=
 # is usually also the name of the instance itself.
 export ARGOCD_E2E_NAME_PREFIX="argocd-test"
 
-# When our 
-export ARGOCD_E2E_DYNAMIC_PERMISSIONS=false
-
 # This is to skip some (deprecated) tests
 export ARGOCD_E2E_K3S=true
 
-# Skip some tests
+# Configuration for skipping certain classes of tests
+
 # GnuPG features not yet available with GitOps Operator
 export ARGOCD_E2E_SKIP_GPG=true
 # Some tests do not work OOTB with OpenShift
 export ARGOCD_E2E_SKIP_OPENSHIFT=true
 # Skip Helm tests
-#export ARGOCD_E2E_SKIP_HELM=true
+export ARGOCD_E2E_SKIP_HELM=false
 # Skip Helm v2 related tests
 export ARGOCD_E2E_SKIP_HELM2=true
 # Skip Ksonnet tests
 export ARGOCD_E2E_SKIP_KSONNET=true
+
+## ====================================================
+# no changes below this line required
+## ====================================================
 
 # Unauthenticated URLs for pushing from CI
 #

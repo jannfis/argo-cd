@@ -24,17 +24,18 @@ func AddCustomCACert() {
 		errors.FailOnErr(fixture.RunCli(args...))
 	}
 
-	// certData, err := ioutil.ReadFile(caCertPath)
-	// errors.CheckError(err)
-	// err = ioutil.WriteFile(fixture.TmpDir+"/app/config/tls/localhost", certData, 0644)
-	// errors.CheckError(err)
-	// err = ioutil.WriteFile(fixture.TmpDir+"/app/config/tls/127.0.0.1", certData, 0644)
-	// errors.CheckError(err)
-
 	if fixture.IsRemote() {
 		fixture.RestartAPIServer()
 		fixture.RestartRepoServer()
+	} else {
+		certData, err := ioutil.ReadFile(caCertPath)
+		errors.CheckError(err)
+		err = ioutil.WriteFile(fixture.TmpDir+"/app/config/tls/localhost", certData, 0644)
+		errors.CheckError(err)
+		err = ioutil.WriteFile(fixture.TmpDir+"/app/config/tls/127.0.0.1", certData, 0644)
+		errors.CheckError(err)
 	}
+
 }
 
 func AddCustomSSHKnownHostsKeys() {

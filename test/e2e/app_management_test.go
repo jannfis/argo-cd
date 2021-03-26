@@ -1337,8 +1337,10 @@ func TestNamespaceAutoCreation(t *testing.T) {
 	SkipOnEnv(t, "OPENSHIFT")
 	updatedNamespace := getNewNamespace(t)
 	defer func() {
-		_, err := Run("", "kubectl", "delete", "namespace", updatedNamespace)
-		assert.NoError(t, err)
+		if !t.Skipped() {
+			_, err := Run("", "kubectl", "delete", "namespace", updatedNamespace)
+			assert.NoError(t, err)
+		}
 	}()
 	Given(t).
 		Timeout(30).

@@ -45,7 +45,7 @@ func AddCustomSSHKnownHostsKeys() {
 	}
 	knownHostsPath, err := filepath.Abs(source)
 	errors.CheckError(err)
-	args := []string{"cert", "add-ssh", "--batch", "--from", knownHostsPath}
+	args := []string{"cert", "add-ssh", "--upsert", "--batch", "--from", knownHostsPath}
 	errors.FailOnErr(fixture.RunCli(args...))
 
 	if fixture.IsLocal() {

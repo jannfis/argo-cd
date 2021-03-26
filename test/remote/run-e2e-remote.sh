@@ -17,11 +17,11 @@ export ARGOCD_E2E_DEFAULT_TIMEOUT=30
 
 # Set ARGOCD_E2E_NAMESPACE to the namespace the Argo CD we're testing against is
 # running in. Defaults to "argocd-e2e"
-export ARGOCD_E2E_NAMESPACE=
+export ARGOCD_E2E_NAMESPACE=${ARGOCD_E2E_NAMESPACE:-argocd-e2e}
 
 # Name prefix the operator sets on resources created for Argo CD instance. This
 # is usually also the name of the instance itself.
-export ARGOCD_E2E_NAME_PREFIX="argocd-test"
+export ARGOCD_E2E_NAME_PREFIX="${ARGOCD_E2E_NAME_PREFIX:-}"
 
 # This is to skip some (deprecated) tests
 export ARGOCD_E2E_K3S=true
@@ -29,15 +29,15 @@ export ARGOCD_E2E_K3S=true
 # Configuration for skipping certain classes of tests
 
 # GnuPG features not yet available with GitOps Operator
-export ARGOCD_E2E_SKIP_GPG=true
+export ARGOCD_E2E_SKIP_GPG=${ARGOCD_E2E_SKIP_GPG:-false}
 # Some tests do not work OOTB with OpenShift
-export ARGOCD_E2E_SKIP_OPENSHIFT=true
+export ARGOCD_E2E_SKIP_OPENSHIFT=${ARGOCD_E2E_SKIP_OPENSHIFT:-false}
 # Skip Helm tests
-export ARGOCD_E2E_SKIP_HELM=false
+export ARGOCD_E2E_SKIP_HELM=${ARGOCD_E2E_SKIP_HELM:-false}
 # Skip Helm v2 related tests
-export ARGOCD_E2E_SKIP_HELM2=true
+export ARGOCD_E2E_SKIP_HELM2=${ARGOCD_E2E_SKIP_HELM2:-false}
 # Skip Ksonnet tests
-export ARGOCD_E2E_SKIP_KSONNET=true
+export ARGOCD_E2E_SKIP_KSONNET=${ARGOCD_E2E_SKIP_KSONNET:-false}
 
 ## ====================================================
 # no changes below this line required

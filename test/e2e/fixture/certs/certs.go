@@ -19,25 +19,24 @@ func AddCustomCACert() {
 		errors.FailOnErr(fixture.RunCli(args...))
 		args = []string{"cert", "add-tls", "127.0.0.1", "--from", caCertPath}
 		errors.FailOnErr(fixture.RunCli(args...))
-	} else {
-		args := []string{"cert", "add-tls", "argocd-e2e-server", "--from", caCertPath}
-		errors.FailOnErr(fixture.RunCli(args...))
-	}
-
-	if fixture.IsRemote() {
-		fixture.RestartAPIServer()
-		fixture.RestartRepoServer()
-	} else {
 		certData, err := ioutil.ReadFile(caCertPath)
 		errors.CheckError(err)
 		err = ioutil.WriteFile(fixture.TmpDir+"/app/config/tls/localhost", certData, 0644)
 		errors.CheckError(err)
 		err = ioutil.WriteFile(fixture.TmpDir+"/app/config/tls/127.0.0.1", certData, 0644)
 		errors.CheckError(err)
+	} else {
+		args := []string{"cert", "add-tls", "argocd-e2e-server", "--from", caCertPath}
+		errors.FailOnErr(fixture.RunCli(args...))
+		fixture.RestartAPIServer()
+		fixture.RestartRepoServer()
 	}
 
 }
 
+// AddCustomSSHKnownHostsKeys adds SSH known hosts data to the Argo CD server
+// being tested against. The env ARGOCD_E2E_SSH_KNOWN_HOSTS lets you specify
+// an optional path to the known hosts file, instead of using the default one.
 func AddCustomSSHKnownHostsKeys() {
 	source := os.Getenv("ARGOCD_E2E_SSH_KNOWN_HOSTS")
 	if source == "" {
@@ -53,9 +52,7 @@ func AddCustomSSHKnownHostsKeys() {
 		errors.CheckError(err)
 		err = ioutil.WriteFile(fixture.TmpDir+"/app/config/ssh/ssh_known_hosts", knownHostsData, 0644)
 		errors.CheckError(err)
-	}
-
-	if fixture.IsRemote() {
+	} else {
 		fixture.RestartAPIServer()
 		fixture.RestartRepoServer()
 	}

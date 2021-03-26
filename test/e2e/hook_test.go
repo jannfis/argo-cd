@@ -34,7 +34,6 @@ func TestPostSyncHookSuccessful(t *testing.T) {
 // make sure we can run a standard sync hook
 func testHookSuccessful(t *testing.T, hookType HookType) {
 	Given(t).
-		Timeout(20).
 		Path("hook").
 		When().
 		PatchFile("hook.yaml", fmt.Sprintf(`[{"op": "replace", "path": "/metadata/annotations", "value": {"argocd.argoproj.io/hook": "%s"}}]`, hookType)).

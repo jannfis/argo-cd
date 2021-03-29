@@ -6,5 +6,5 @@ resources:
 
 images:
 - name: quay.io/jfischer-redhat/argocd-e2e-cluster
-  newName: quay.io/jfischer-redhat/argocd-e2e-cluster
+  newName: argocd-e2e-cluster
   newTag: latest

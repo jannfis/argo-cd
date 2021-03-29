@@ -20,5 +20,6 @@ image-push: image
 
 .PHONY: manifests
 manifests:
-	cd manifests && \
-		kustomize edit set image quay.io/jfischer-redhat/argocd-e2e-cluster=$(IMAGE_PREFIX)$(IMAGE_NAME):$(IMAGE_TAG)
+	@cd manifests && \
+		kustomize edit set image quay.io/jfischer-redhat/argocd-e2e-cluster=$(IMAGE_PREFIX)$(IMAGE_NAME):$(IMAGE_TAG) && \
+		kustomize build .

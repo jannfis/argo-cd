@@ -1,12 +1,12 @@
-FROM redis:6.2.1 as redis
+FROM docker.io/library/redis:6.2.1 as redis
 
-FROM node:12.18.4 as node
+FROM docker.io/library/node:12.18.4 as node
 
-FROM golang:1.16.4 as golang
+FROM docker.io/library/golang:1.16.4 as golang
 
-FROM registry:2.7.1 as registry
+FROM docker.io/library/registry:2.7.1 as registry
 
-FROM ubuntu:20.10
+FROM docker.io/library/ubuntu:21.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN  apt-get update && apt-get install --fix-missing -y \

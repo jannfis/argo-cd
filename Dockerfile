@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=docker.io/library/ubuntu:20.10
+ARG BASE_IMAGE=docker.io/library/ubuntu:21.04
 ####################################################################################################
 # Builder image
 # Initial stage which pulls prepares build dependencies and CLI tooling we need for our final image
@@ -102,7 +102,7 @@ RUN NODE_ENV='production' NODE_ONLINE_ENV='online' yarn build
 ####################################################################################################
 # Argo CD Build stage which performs the actual build of Argo CD binaries
 ####################################################################################################
-FROM golang:1.16.0 as argocd-build
+FROM golang:1.16.4 as argocd-build
 
 WORKDIR /go/src/github.com/argoproj/argo-cd
 

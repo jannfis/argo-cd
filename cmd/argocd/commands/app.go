@@ -471,8 +471,8 @@ func appURL(acdClient argocdclient.Client, appName string) string {
 	argoSettings, err := settingsIf.Get(context.Background(), &settingspkg.SettingsQuery{})
 	errors.CheckError(err)
 
-	if argoSettings.URL != "" {
-		return fmt.Sprintf("%s/applications/%s", argoSettings.URL, appName)
+	if argoSettings.GetUrl() != "" {
+		return fmt.Sprintf("%s/applications/%s", argoSettings.GetUrl(), appName)
 	}
 	return appURLDefault(acdClient, appName)
 }

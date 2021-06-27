@@ -234,7 +234,7 @@ func TestExecuteResourceActionDiscovery(t *testing.T) {
 	vm := VM{}
 	actions, err := vm.ExecuteResourceActionDiscovery(testObj, validDiscoveryLua)
 	assert.Nil(t, err)
-	expectedActions := []appv1.ResourceAction{
+	expectedActions := []*appv1.ResourceAction{
 		{
 			Name: "resume",
 		}, {

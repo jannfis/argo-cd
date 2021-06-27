@@ -80,7 +80,7 @@ func (s *Server) Get(ctx context.Context, q *settingspkg.SettingsQuery) (*settin
 	}
 
 	set := settingspkg.Settings{
-		URL:                argoCDSettings.URL,
+		Url:                argoCDSettings.URL,
 		AppLabelKey:        appInstanceLabelKey,
 		ResourceOverrides:  overrides,
 		StatusBadgeEnabled: argoCDSettings.StatusBadgeEnabled,
@@ -122,15 +122,15 @@ func (s *Server) Get(ctx context.Context, q *settingspkg.SettingsQuery) (*settin
 		}
 	}
 	if oidcConfig := argoCDSettings.OIDCConfig(); oidcConfig != nil {
-		set.OIDCConfig = &settingspkg.OIDCConfig{
+		set.OidcConfig = &settingspkg.OIDCConfig{
 			Name:        oidcConfig.Name,
 			Issuer:      oidcConfig.Issuer,
 			ClientID:    oidcConfig.ClientID,
-			CLIClientID: oidcConfig.CLIClientID,
+			CliClientID: oidcConfig.CLIClientID,
 			Scopes:      oidcConfig.RequestedScopes,
 		}
 		if len(argoCDSettings.OIDCConfig().RequestedIDTokenClaims) > 0 {
-			set.OIDCConfig.IDTokenClaims = argoCDSettings.OIDCConfig().RequestedIDTokenClaims
+			set.GetOidcConfig().IdTokenClaims = argoCDSettings.OIDCConfig().RequestedIDTokenClaims
 		}
 	}
 	return &set, nil

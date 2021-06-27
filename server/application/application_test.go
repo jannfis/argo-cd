@@ -285,7 +285,7 @@ func TestCreateApp(t *testing.T) {
 	appServer := newTestAppServer()
 	testApp.Spec.Project = ""
 	createReq := application.ApplicationCreateRequest{
-		Application: *testApp,
+		Application: testApp,
 	}
 	app, err := appServer.Create(context.Background(), &createReq)
 	assert.NoError(t, err)
@@ -298,7 +298,7 @@ func TestCreateAppWithDestName(t *testing.T) {
 	appServer := newTestAppServer()
 	testApp := newTestAppWithDestName()
 	createReq := application.ApplicationCreateRequest{
-		Application: *testApp,
+		Application: testApp,
 	}
 	app, err := appServer.Create(context.Background(), &createReq)
 	assert.NoError(t, err)
@@ -323,7 +323,7 @@ func TestUpdateAppSpec(t *testing.T) {
 	testApp.Spec.Project = ""
 	spec, err := appServer.UpdateSpec(context.Background(), &application.ApplicationUpdateSpecRequest{
 		Name: &testApp.Name,
-		Spec: testApp.Spec,
+		Spec: &testApp.Spec,
 	})
 	assert.NoError(t, err)
 	assert.Equal(t, "default", spec.Project)
@@ -336,7 +336,7 @@ func TestDeleteApp(t *testing.T) {
 	ctx := context.Background()
 	appServer := newTestAppServer()
 	createReq := application.ApplicationCreateRequest{
-		Application: *newTestApp(),
+		Application: newTestApp(),
 	}
 	app, err := appServer.Create(ctx, &createReq)
 	assert.Nil(t, err)
@@ -436,7 +436,7 @@ func TestSyncAndTerminate(t *testing.T) {
 	testApp := newTestApp()
 	testApp.Spec.Source.RepoURL = "https://github.com/argoproj/argo-cd.git"
 	createReq := application.ApplicationCreateRequest{
-		Application: *testApp,
+		Application: testApp,
 	}
 	app, err := appServer.Create(ctx, &createReq)
 	assert.Nil(t, err)
@@ -480,7 +480,7 @@ func TestSyncHelm(t *testing.T) {
 	testApp.Spec.Source.Chart = "argo-cd"
 	testApp.Spec.Source.TargetRevision = "0.7.*"
 
-	app, err := appServer.Create(ctx, &application.ApplicationCreateRequest{Application: *testApp})
+	app, err := appServer.Create(ctx, &application.ApplicationCreateRequest{Application: testApp})
 	assert.NoError(t, err)
 
 	app, err = appServer.Sync(ctx, &application.ApplicationSyncRequest{Name: &app.Name})
@@ -500,7 +500,7 @@ func TestSyncGit(t *testing.T) {
 	testApp.Spec.Source.RepoURL = "https://github.com/org/test"
 	testApp.Spec.Source.Path = "deploy"
 	testApp.Spec.Source.TargetRevision = "0.7.*"
-	app, err := appServer.Create(ctx, &application.ApplicationCreateRequest{Application: *testApp})
+	app, err := appServer.Create(ctx, &application.ApplicationCreateRequest{Application: testApp})
 	assert.NoError(t, err)
 	syncReq := &application.ApplicationSyncRequest{
 		Name: &app.Name,
@@ -532,7 +532,7 @@ func TestRollbackApp(t *testing.T) {
 
 	updatedApp, err := appServer.Rollback(context.Background(), &application.ApplicationRollbackRequest{
 		Name: &testApp.Name,
-		ID:   1,
+		Id:   pointer.Int64Ptr(1),
 	})
 
 	assert.Nil(t, err)
@@ -630,7 +630,7 @@ func TestAppMergePatch(t *testing.T) {
 	appServer.enf.SetDefaultRole("")
 
 	app, err := appServer.Patch(ctx, &application.ApplicationPatchRequest{
-		Name: &testApp.Name, Patch: `{"spec": { "source": { "path": "foo" } }}`, PatchType: "merge"})
+		Name: &testApp.Name, Patch: pointer.StringPtr(`{"spec": { "source": { "path": "foo" } }}`), PatchType: pointer.StringPtr("merge")})
 	assert.NoError(t, err)
 	assert.Equal(t, "foo", app.Spec.Source.Path)
 }

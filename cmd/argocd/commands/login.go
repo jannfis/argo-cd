@@ -112,7 +112,7 @@ func NewLoginCommand(globalClientOpts *argocdclient.ClientOptions) *cobra.Comman
 				errors.CheckError(err)
 				oauth2conf, provider, err := acdClient.OIDCConfig(ctx, acdSet)
 				errors.CheckError(err)
-				tokenString, refreshToken = oauth2Login(ctx, ssoPort, acdSet.GetOIDCConfig(), oauth2conf, provider)
+				tokenString, refreshToken = oauth2Login(ctx, ssoPort, acdSet.GetOidcConfig(), oauth2conf, provider)
 			}
 
 			parser := &jwt.Parser{
@@ -272,7 +272,7 @@ func oauth2Login(ctx context.Context, port int, oidcSettings *settingspkg.OIDCCo
 	var url string
 	grantType := oidcutil.InferGrantType(oidcConf)
 	opts := []oauth2.AuthCodeOption{oauth2.AccessTypeOffline}
-	if claimsRequested := oidcSettings.GetIDTokenClaims(); claimsRequested != nil {
+	if claimsRequested := oidcSettings.GetIdTokenClaims(); claimsRequested != nil {
 		opts = oidcutil.AppendClaimsAuthenticationRequestParameter(opts, claimsRequested)
 	}
 

@@ -939,7 +939,7 @@ func (s *Server) getAppResource(ctx context.Context, action string, q *applicati
 
 	found := tree.FindNode(q.GetGroup(), q.GetKind(), q.GetNamespace(), q.GetResourceName())
 	if found == nil {
-		return nil, nil, nil, status.Errorf(codes.InvalidArgument, "%s %s %s not found as part of application %s", q.Kind, q.Group, q.ResourceName, *q.Name)
+		return nil, nil, nil, status.Errorf(codes.InvalidArgument, "%s %s %s not found as part of application %s", q.GetKind(), q.GetGroup(), q.GetResourceName(), q.GetName())
 	}
 	config, err := s.getApplicationClusterConfig(ctx, a)
 	if err != nil {
@@ -1402,7 +1402,7 @@ func (s *Server) Sync(ctx context.Context, syncReq *application.ApplicationSyncR
 	}
 	if a.Spec.SyncPolicy != nil && a.Spec.SyncPolicy.Automated != nil {
 		if syncReq.GetRevision() != "" && syncReq.GetRevision() != text.FirstNonEmpty(a.Spec.Source.TargetRevision, "HEAD") {
-			return nil, status.Errorf(codes.FailedPrecondition, "Cannot sync to %s: auto-sync currently set to %s", syncReq.Revision, a.Spec.Source.TargetRevision)
+			return nil, status.Errorf(codes.FailedPrecondition, "Cannot sync to %s: auto-sync currently set to %s", syncReq.GetRevision(), a.Spec.Source.TargetRevision)
 		}
 	}
 	revision, displayRevision, err := s.resolveRevision(ctx, a, syncReq)

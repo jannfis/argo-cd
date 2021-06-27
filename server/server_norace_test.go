@@ -11,7 +11,9 @@ import (
 	"testing"
 	"time"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/argoproj/argo-cd/v2/common"
 	"github.com/argoproj/argo-cd/v2/pkg/apiclient"
@@ -64,12 +66,6 @@ func TestUserAgent(t *testing.T) {
 			userAgent: fmt.Sprintf("%s/%s-rc1", common.ArgoCDUserAgentName, currentVersion),
 		},
 		{
-			// Reject legacy client
-			// NOTE: after we update the grpc-go client past 1.15.0, this test will break and should be deleted
-			userAgent: " ", // need a space here since the apiclient will set the default user-agent if empty
-			errorMsg:  "unsatisfied client version constraint",
-		},
-		{
 			// Permit custom clients
 			userAgent: "foo/1.2.3",
 		},
@@ -82,14 +78,15 @@ func TestUserAgent(t *testing.T) {
 			UserAgent:  test.userAgent,
 		}
 		clnt, err := apiclient.NewClient(&opts)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		conn, appClnt := clnt.NewApplicationClientOrDie()
 		_, err = appClnt.List(ctx, &applicationpkg.ApplicationQuery{})
 		if test.errorMsg != "" {
-			assert.Error(t, err)
-			assert.Regexp(t, test.errorMsg, err.Error())
+			log.Errorf("Expected error %s", test.errorMsg)
+			require.Error(t, err)
+			require.Regexp(t, test.errorMsg, err.Error())
 		} else {
-			assert.NoError(t, err)
+			require.NoError(t, err)
 		}
 		_ = conn.Close()
 	}

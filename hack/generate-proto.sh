@@ -56,15 +56,15 @@ ${PROJECT_ROOT}/dist/go-to-protobuf \
 # server/*/<service>.pb.go from .proto files. golang/protobuf and gogo/protobuf can be used
 # interchangeably. The difference in the options are:
 # 1. protoc-gen-go - official golang/protobuf
-#go build -o dist/protoc-gen-go ./vendor/github.com/golang/protobuf/protoc-gen-go
-#GOPROTOBINARY=go
+go build -o dist/protoc-gen-go ./vendor/github.com/golang/protobuf/protoc-gen-go
+GOPROTOBINARY=go
 # 2. protoc-gen-gofast - fork of golang golang/protobuf. Faster code generation
 #go build -o dist/protoc-gen-gofast ./vendor/github.com/gogo/protobuf/protoc-gen-gofast
 #GOPROTOBINARY=gofast
 # 3. protoc-gen-gogofast - faster code generation and gogo extensions and flexibility in controlling
 # the generated go code (e.g. customizing field names, nullable fields)
-go build -o dist/protoc-gen-gogofast ./vendor/github.com/gogo/protobuf/protoc-gen-gogofast
-GOPROTOBINARY=gogofast
+#go build -o dist/protoc-gen-gogofast ./vendor/github.com/gogo/protobuf/protoc-gen-gogofast
+#GOPROTOBINARY=gogofast
 
 # protoc-gen-grpc-gateway is used to build <service>.pb.gw.go files from from .proto files
 go build -o dist/protoc-gen-grpc-gateway ./vendor/github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway

@@ -168,6 +168,7 @@ func NewApplicationResourceActionsRunCommand(clientOpts *argocdclient.ClientOpti
 				Group:        pointer.StringPtr(gvk.Group),
 				Kind:         pointer.StringPtr(gvk.Kind),
 				Action:       pointer.StringPtr(actionName),
+				Version:      pointer.StringPtr(""),
 			})
 			errors.CheckError(err)
 		}

@@ -1441,7 +1441,7 @@ func (ctrl *ApplicationController) autoSync(app *appv1.Application, syncStatus *
 		if shouldSelfHeal, retryAfter := ctrl.shouldSelfHeal(app); shouldSelfHeal {
 			for _, resource := range resources {
 				if resource.Status != appv1.SyncStatusCodeSynced {
-					op.Sync.Resources = append(op.Sync.Resources, appv1.SyncOperationResource{
+					op.Sync.Resources = append(op.Sync.Resources, &appv1.SyncOperationResource{
 						Kind:  resource.Kind,
 						Group: resource.Group,
 						Name:  resource.Name,

@@ -143,7 +143,7 @@ func NewApplicationCreateCommand(clientOpts *argocdclient.ClientOptions) *cobra.
 			conn, appIf := argocdClient.NewApplicationClientOrDie()
 			defer argoio.Close(conn)
 			appCreateRequest := applicationpkg.ApplicationCreateRequest{
-				Application: *app,
+				Application: app,
 				Upsert:      &upsert,
 				Validate:    &appOpts.Validate,
 			}
@@ -294,17 +294,17 @@ func NewApplicationLogsCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 			for retry {
 				retry = false
 				stream, err := appIf.PodLogs(context.Background(), &applicationpkg.ApplicationPodLogsQuery{
-					Name:         &appName,
-					Group:        &group,
-					Namespace:    namespace,
-					Kind:         &kind,
-					ResourceName: &resourceName,
-					Follow:       follow,
-					TailLines:    tail,
-					SinceSeconds: sinceSeconds,
-					UntilTime:    &untilTime,
-					Filter:       &filter,
-					Container:    container,
+					Name:         pointer.StringPtr(appName),
+					Group:        pointer.StringPtr(group),
+					Namespace:    pointer.StringPtr(namespace),
+					Kind:         pointer.StringPtr(kind),
+					ResourceName: pointer.StringPtr(resourceName),
+					Follow:       pointer.BoolPtr(follow),
+					TailLines:    pointer.Int64Ptr(tail),
+					SinceSeconds: pointer.Int64Ptr(sinceSeconds),
+					UntilTime:    pointer.StringPtr(untilTime),
+					Filter:       pointer.StringPtr(filter),
+					Container:    pointer.StringPtr(container),
 				})
 				if err != nil {
 					log.Fatalf("failed to get pod logs: %v", err)
@@ -326,7 +326,7 @@ func NewApplicationLogsCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 						}
 						log.Fatalf("stream read failed: %v", err)
 					}
-					if !msg.Last {
+					if !msg.GetLast() {
 						fmt.Println(msg.Content)
 					} else {
 						return
@@ -538,7 +538,7 @@ func NewApplicationSetCommand(clientOpts *argocdclient.ClientOptions) *cobra.Com
 			setParameterOverrides(app, appOpts.Parameters)
 			_, err = appIf.UpdateSpec(ctx, &applicationpkg.ApplicationUpdateSpecRequest{
 				Name:     &app.Name,
-				Spec:     app.Spec,
+				Spec:     &app.Spec,
 				Validate: &appOpts.Validate,
 			})
 			errors.CheckError(err)
@@ -686,7 +686,7 @@ func NewApplicationUnsetCommand(clientOpts *argocdclient.ClientOptions) *cobra.C
 			cmdutil.SetAppSpecOptions(c.Flags(), &app.Spec, &appOpts)
 			_, err = appIf.UpdateSpec(context.Background(), &applicationpkg.ApplicationUpdateSpecRequest{
 				Name:     &app.Name,
-				Spec:     app.Spec,
+				Spec:     &app.Spec,
 				Validate: &appOpts.Validate,
 			})
 			errors.CheckError(err)
@@ -845,7 +845,7 @@ func NewApplicationDiffCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 				var unstructureds []*unstructured.Unstructured
 				q := applicationpkg.ApplicationManifestQuery{
 					Name:     &appName,
-					Revision: revision,
+					Revision: &revision,
 				}
 				res, err := appIf.GetManifests(context.Background(), &q)
 				errors.CheckError(err)
@@ -1083,7 +1083,7 @@ func NewApplicationListCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 		Run: func(c *cobra.Command, args []string) {
 			conn, appIf := argocdclient.NewClientOrDie(clientOpts).NewApplicationClientOrDie()
 			defer argoio.Close(conn)
-			apps, err := appIf.List(context.Background(), &applicationpkg.ApplicationQuery{Selector: selector})
+			apps, err := appIf.List(context.Background(), &applicationpkg.ApplicationQuery{Selector: &selector})
 			errors.CheckError(err)
 			appList := apps.Items
 			if len(projects) != 0 {
@@ -1155,10 +1155,10 @@ const (
 	resourceFieldNameWithNamespaceCount = 2
 )
 
-func parseSelectedResources(resources []string) []argoappv1.SyncOperationResource {
-	var selectedResources []argoappv1.SyncOperationResource
+func parseSelectedResources(resources []string) []*argoappv1.SyncOperationResource {
+	var selectedResources []*argoappv1.SyncOperationResource
 	if resources != nil {
-		selectedResources = []argoappv1.SyncOperationResource{}
+		selectedResources = []*argoappv1.SyncOperationResource{}
 		for _, r := range resources {
 			fields := strings.Split(r, resourceFieldDelimiter)
 			if len(fields) != resourceFieldCount {
@@ -1180,7 +1180,7 @@ func parseSelectedResources(resources []string) []argoappv1.SyncOperationResourc
 				Name:      name,
 				Namespace: namespace,
 			}
-			selectedResources = append(selectedResources, rsrc)
+			selectedResources = append(selectedResources, &rsrc)
 		}
 	}
 	return selectedResources
@@ -1225,7 +1225,7 @@ func NewApplicationWaitCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 			closer, appIf := acdClient.NewApplicationClientOrDie()
 			defer argoio.Close(closer)
 			if selector != "" {
-				list, err := appIf.List(context.Background(), &applicationpkg.ApplicationQuery{Selector: selector})
+				list, err := appIf.List(context.Background(), &applicationpkg.ApplicationQuery{Selector: &selector})
 				errors.CheckError(err)
 				for _, i := range list.Items {
 					appNames = append(appNames, i.Name)
@@ -1308,7 +1308,7 @@ func NewApplicationSyncCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 
 			appNames := args
 			if selector != "" {
-				list, err := appIf.List(context.Background(), &applicationpkg.ApplicationQuery{Selector: selector})
+				list, err := appIf.List(context.Background(), &applicationpkg.ApplicationQuery{Selector: &selector})
 				errors.CheckError(err)
 				// unlike list, we'd want to fail if nothing was found
 				if len(list.Items) == 0 {
@@ -1326,7 +1326,7 @@ func NewApplicationSyncCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 
 					q := applicationpkg.ApplicationManifestQuery{
 						Name:     &appName,
-						Revision: revision,
+						Revision: &revision,
 					}
 
 					res, err := appIf.GetManifests(ctx, &q)
@@ -1379,10 +1379,10 @@ func NewApplicationSyncCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 
 				syncReq := applicationpkg.ApplicationSyncRequest{
 					Name:      &appName,
-					DryRun:    dryRun,
-					Revision:  revision,
+					DryRun:    pointer.BoolPtr(dryRun),
+					Revision:  &revision,
 					Resources: selectedResources,
-					Prune:     prune,
+					Prune:     pointer.BoolPtr(prune),
 					Manifests: localObjsStrings,
 					Infos:     getInfos(infos),
 				}
@@ -1489,7 +1489,7 @@ func (rs *resourceState) Merge(newState *resourceState) bool {
 	return updated
 }
 
-func getResourceStates(app *argoappv1.Application, selectedResources []argoappv1.SyncOperationResource) []*resourceState {
+func getResourceStates(app *argoappv1.Application, selectedResources []*argoappv1.SyncOperationResource) []*resourceState {
 	var states []*resourceState
 	resourceByKey := make(map[kube.ResourceKey]argoappv1.ResourceStatus)
 	for i := range app.Status.Resources {
@@ -1544,7 +1544,7 @@ func getResourceStates(app *argoappv1.Application, selectedResources []argoappv1
 	return states
 }
 
-func groupResourceStates(app *argoappv1.Application, selectedResources []argoappv1.SyncOperationResource) map[string]*resourceState {
+func groupResourceStates(app *argoappv1.Application, selectedResources []*argoappv1.SyncOperationResource) map[string]*resourceState {
 	resStates := make(map[string]*resourceState)
 	for _, result := range getResourceStates(app, selectedResources) {
 		key := result.Key()
@@ -1575,7 +1575,7 @@ func checkResourceStatus(watchSync bool, watchHealth bool, watchOperation bool, 
 
 const waitFormatString = "%s\t%5s\t%10s\t%10s\t%20s\t%8s\t%7s\t%10s\t%s\n"
 
-func waitOnApplicationStatus(acdClient apiclient.Client, appName string, timeout uint, watchSync bool, watchHealth bool, watchOperation bool, watchSuspended bool, selectedResources []argoappv1.SyncOperationResource) (*argoappv1.Application, error) {
+func waitOnApplicationStatus(acdClient apiclient.Client, appName string, timeout uint, watchSync bool, watchHealth bool, watchOperation bool, watchSuspended bool, selectedResources []*argoappv1.SyncOperationResource) (*argoappv1.Application, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -1848,8 +1848,8 @@ func NewApplicationRollbackCommand(clientOpts *argocdclient.ClientOptions) *cobr
 
 			_, err = appIf.Rollback(ctx, &applicationpkg.ApplicationRollbackRequest{
 				Name:  &appName,
-				ID:    int64(depID),
-				Prune: prune,
+				Id:    pointer.Int64Ptr(int64(depID)),
+				Prune: pointer.BoolPtr(prune),
 			})
 			errors.CheckError(err)
 
@@ -1915,7 +1915,7 @@ func NewApplicationManifestsCommand(clientOpts *argocdclient.ClientOptions) *cob
 				if revision != "" {
 					q := applicationpkg.ApplicationManifestQuery{
 						Name:     &appName,
-						Revision: revision,
+						Revision: &revision,
 					}
 					res, err := appIf.GetManifests(ctx, &q)
 					errors.CheckError(err)
@@ -2004,7 +2004,7 @@ func NewApplicationEditCommand(clientOpts *argocdclient.ClientOptions) *cobra.Co
 
 				var appOpts cmdutil.AppOptions
 				cmdutil.SetAppSpecOptions(c.Flags(), &app.Spec, &appOpts)
-				_, err = appIf.UpdateSpec(context.Background(), &applicationpkg.ApplicationUpdateSpecRequest{Name: &app.Name, Spec: updatedSpec, Validate: &appOpts.Validate})
+				_, err = appIf.UpdateSpec(context.Background(), &applicationpkg.ApplicationUpdateSpecRequest{Name: &app.Name, Spec: &updatedSpec, Validate: &appOpts.Validate})
 				if err != nil {
 					return fmt.Errorf("Failed to update application spec:\n%v", err)
 				}
@@ -2078,8 +2078,8 @@ func NewApplicationPatchCommand(clientOpts *argocdclient.ClientOptions) *cobra.C
 
 			patchedApp, err := appIf.Patch(context.Background(), &applicationpkg.ApplicationPatchRequest{
 				Name:      &appName,
-				Patch:     patch,
-				PatchType: patchType,
+				Patch:     &patch,
+				PatchType: &patchType,
 			})
 			errors.CheckError(err)
 
@@ -2171,13 +2171,13 @@ func NewApplicationPatchResourceCommand(clientOpts *argocdclient.ClientOptions) 
 			gvk := obj.GroupVersionKind()
 			_, err = appIf.PatchResource(ctx, &applicationpkg.ApplicationResourcePatchRequest{
 				Name:         &appName,
-				Namespace:    obj.GetNamespace(),
-				ResourceName: obj.GetName(),
-				Version:      gvk.Version,
-				Group:        gvk.Group,
-				Kind:         gvk.Kind,
-				Patch:        patch,
-				PatchType:    patchType,
+				Namespace:    pointer.StringPtr(obj.GetNamespace()),
+				ResourceName: pointer.StringPtr(obj.GetName()),
+				Version:      pointer.StringPtr(gvk.Version),
+				Group:        pointer.StringPtr(gvk.Group),
+				Kind:         pointer.StringPtr(gvk.Kind),
+				Patch:        pointer.StringPtr(patch),
+				PatchType:    pointer.StringPtr(patchType),
 			})
 			errors.CheckError(err)
 			log.Infof("Resource '%s' patched", obj.GetName())

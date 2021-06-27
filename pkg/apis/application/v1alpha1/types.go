@@ -631,7 +631,7 @@ type SyncOperation struct {
 	// SyncStrategy describes how to perform the sync
 	SyncStrategy *SyncStrategy `json:"syncStrategy,omitempty" protobuf:"bytes,4,opt,name=syncStrategy"`
 	// Resources describes which resources shall be part of the sync
-	Resources []SyncOperationResource `json:"resources,omitempty" protobuf:"bytes,6,opt,name=resources"`
+	Resources []*SyncOperationResource `json:"resources,omitempty" protobuf:"bytes,6,opt,name=resources"`
 	// Source overrides the source definition set in the application.
 	// This is typically set in a Rollback operation and is nil during a Sync operation
 	Source *ApplicationSource `json:"source,omitempty" protobuf:"bytes,7,opt,name=source"`

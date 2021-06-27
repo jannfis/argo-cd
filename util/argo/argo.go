@@ -137,7 +137,7 @@ func WaitForRefresh(ctx context.Context, appIf v1alpha1.ApplicationInterface, na
 		}
 		app, ok := next.Object.(*argoappv1.Application)
 		if !ok {
-			return nil, fmt.Errorf("Application event object failed conversion: %v", next)
+			return nil, fmt.Errorf("application event object failed conversion: %v", next)
 		}
 		annotations := app.GetAnnotations()
 		if annotations == nil {
@@ -465,7 +465,7 @@ func SetAppOperation(appIf v1alpha1.ApplicationInterface, appName string, op *ar
 }
 
 // ContainsSyncResource determines if the given resource exists in the provided slice of sync operation resources.
-func ContainsSyncResource(name string, namespace string, gvk schema.GroupVersionKind, rr []argoappv1.SyncOperationResource) bool {
+func ContainsSyncResource(name string, namespace string, gvk schema.GroupVersionKind, rr []*argoappv1.SyncOperationResource) bool {
 	for _, r := range rr {
 		if r.HasIdentity(name, namespace, gvk) {
 			return true

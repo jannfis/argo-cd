@@ -16,6 +16,8 @@ import (
 	applicationpkg "github.com/argoproj/argo-cd/v2/pkg/apiclient/application"
 	"github.com/argoproj/argo-cd/v2/util/errors"
 	"github.com/argoproj/argo-cd/v2/util/io"
+
+	"k8s.io/utils/pointer"
 )
 
 type DisplayedAction struct {
@@ -70,10 +72,10 @@ func NewApplicationResourceActionsListCommand(clientOpts *argocdclient.ClientOpt
 			gvk := obj.GroupVersionKind()
 			availActionsForResource, err := appIf.ListResourceActions(ctx, &applicationpkg.ApplicationResourceRequest{
 				Name:         &appName,
-				Namespace:    obj.GetNamespace(),
-				ResourceName: obj.GetName(),
-				Group:        gvk.Group,
-				Kind:         gvk.Kind,
+				Namespace:    pointer.StringPtr(obj.GetNamespace()),
+				ResourceName: pointer.StringPtr(obj.GetName()),
+				Group:        pointer.StringPtr(gvk.Group),
+				Kind:         pointer.StringPtr(gvk.Kind),
 			})
 			errors.CheckError(err)
 			for _, action := range availActionsForResource.Actions {
@@ -161,11 +163,11 @@ func NewApplicationResourceActionsRunCommand(clientOpts *argocdclient.ClientOpti
 			objResourceName := obj.GetName()
 			_, err := appIf.RunResourceAction(context.Background(), &applicationpkg.ResourceActionRunRequest{
 				Name:         &appName,
-				Namespace:    obj.GetNamespace(),
-				ResourceName: objResourceName,
-				Group:        gvk.Group,
-				Kind:         gvk.Kind,
-				Action:       actionName,
+				Namespace:    pointer.StringPtr(obj.GetNamespace()),
+				ResourceName: pointer.StringPtr(objResourceName),
+				Group:        pointer.StringPtr(gvk.Group),
+				Kind:         pointer.StringPtr(gvk.Kind),
+				Action:       pointer.StringPtr(actionName),
 			})
 			errors.CheckError(err)
 		}

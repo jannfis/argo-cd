@@ -361,11 +361,11 @@ func TestManipulateApplicationResources(t *testing.T) {
 
 			_, err = client.DeleteResource(context.Background(), &applicationpkg.ApplicationResourceDeleteRequest{
 				Name:         &app.Name,
-				Group:        deployment.GroupVersionKind().Group,
-				Kind:         deployment.GroupVersionKind().Kind,
-				Version:      deployment.GroupVersionKind().Version,
-				Namespace:    deployment.GetNamespace(),
-				ResourceName: deployment.GetName(),
+				Group:        pointer.StringPtr(deployment.GroupVersionKind().Group),
+				Kind:         pointer.StringPtr(deployment.GroupVersionKind().Kind),
+				Version:      pointer.StringPtr(deployment.GroupVersionKind().Version),
+				Namespace:    pointer.StringPtr(deployment.GetNamespace()),
+				ResourceName: pointer.StringPtr(deployment.GetName()),
 			})
 			assert.NoError(t, err)
 		}).
@@ -410,14 +410,14 @@ func TestAppWithSecrets(t *testing.T) {
 		Expect(SyncStatusIs(SyncStatusCodeSynced)).
 		And(func(app *Application) {
 			res := FailOnErr(client.GetResource(context.Background(), &applicationpkg.ApplicationResourceRequest{
-				Namespace:    app.Spec.Destination.Namespace,
-				Kind:         kube.SecretKind,
-				Group:        "",
+				Namespace:    &app.Spec.Destination.Namespace,
+				Kind:         pointer.StringPtr(kube.SecretKind),
+				Group:        pointer.StringPtr(""),
 				Name:         &app.Name,
-				Version:      "v1",
-				ResourceName: "test-secret",
+				Version:      pointer.StringPtr("v1"),
+				ResourceName: pointer.StringPtr("test-secret"),
 			})).(*applicationpkg.ApplicationResourceResponse)
-			assetSecretDataHidden(t, res.Manifest)
+			assetSecretDataHidden(t, *res.Manifest)
 
 			manifests, err := client.GetManifests(context.Background(), &applicationpkg.ApplicationManifestQuery{Name: &app.Name})
 			errors.CheckError(err)
@@ -463,7 +463,7 @@ func TestAppWithSecrets(t *testing.T) {
 			app.Spec.IgnoreDifferences = []ResourceIgnoreDifferences{{
 				Kind: kube.SecretKind, JSONPointers: []string{"/data"},
 			}}
-			FailOnErr(client.UpdateSpec(context.Background(), &applicationpkg.ApplicationUpdateSpecRequest{Name: &app.Name, Spec: app.Spec}))
+			FailOnErr(client.UpdateSpec(context.Background(), &applicationpkg.ApplicationUpdateSpecRequest{Name: &app.Name, Spec: &app.Spec}))
 		}).
 		When().
 		Refresh(RefreshTypeNormal).
@@ -658,22 +658,22 @@ func TestResourceAction(t *testing.T) {
 
 			actions, err := client.ListResourceActions(context.Background(), &applicationpkg.ApplicationResourceRequest{
 				Name:         &app.Name,
-				Group:        "apps",
-				Kind:         "Deployment",
-				Version:      "v1",
-				Namespace:    DeploymentNamespace(),
-				ResourceName: "guestbook-ui",
+				Group:        pointer.StringPtr("apps"),
+				Kind:         pointer.StringPtr("Deployment"),
+				Version:      pointer.StringPtr("v1"),
+				Namespace:    pointer.StringPtr(DeploymentNamespace()),
+				ResourceName: pointer.StringPtr("guestbook-ui"),
 			})
 			assert.NoError(t, err)
 			assert.Equal(t, []ResourceAction{{Name: "sample", Disabled: false}}, actions.Actions)
 
 			_, err = client.RunResourceAction(context.Background(), &applicationpkg.ResourceActionRunRequest{Name: &app.Name,
-				Group:        "apps",
-				Kind:         "Deployment",
-				Version:      "v1",
-				Namespace:    DeploymentNamespace(),
-				ResourceName: "guestbook-ui",
-				Action:       "sample",
+				Group:        pointer.StringPtr("apps"),
+				Kind:         pointer.StringPtr("Deployment"),
+				Version:      pointer.StringPtr("v1"),
+				Namespace:    pointer.StringPtr(DeploymentNamespace()),
+				ResourceName: pointer.StringPtr("guestbook-ui"),
+				Action:       pointer.StringPtr("sample"),
 			})
 			assert.NoError(t, err)
 

@@ -2012,8 +2012,14 @@ func (in *SyncOperation) DeepCopyInto(out *SyncOperation) {
 	}
 	if in.Resources != nil {
 		in, out := &in.Resources, &out.Resources
-		*out = make([]SyncOperationResource, len(*in))
-		copy(*out, *in)
+		*out = make([]*SyncOperationResource, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(SyncOperationResource)
+				**out = **in
+			}
+		}
 	}
 	if in.Source != nil {
 		in, out := &in.Source, &out.Source

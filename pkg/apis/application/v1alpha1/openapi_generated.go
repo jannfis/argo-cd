@@ -4076,8 +4076,7 @@ func schema_pkg_apis_application_v1alpha1_SyncOperation(ref common.ReferenceCall
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
-										Default: map[string]interface{}{},
-										Ref:     ref("github.com/argoproj/argo-cd/v2/pkg/apis/application/v1alpha1.SyncOperationResource"),
+										Ref: ref("github.com/argoproj/argo-cd/v2/pkg/apis/application/v1alpha1.SyncOperationResource"),
 									},
 								},
 							},

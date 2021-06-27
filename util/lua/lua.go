@@ -208,7 +208,7 @@ func cleanReturnedArray(newObj, obj []interface{}) []interface{} {
 	return arrayToReturn
 }
 
-func (vm VM) ExecuteResourceActionDiscovery(obj *unstructured.Unstructured, script string) ([]appv1.ResourceAction, error) {
+func (vm VM) ExecuteResourceActionDiscovery(obj *unstructured.Unstructured, script string) ([]*appv1.ResourceAction, error) {
 	l, err := vm.runLua(obj, script)
 	if err != nil {
 		return nil, err
@@ -220,7 +220,7 @@ func (vm VM) ExecuteResourceActionDiscovery(obj *unstructured.Unstructured, scri
 		if err != nil {
 			return nil, err
 		}
-		availableActions := make([]appv1.ResourceAction, 0)
+		availableActions := make([]*appv1.ResourceAction, 0)
 		if noAvailableActions(jsonBytes) {
 			return availableActions, nil
 		}
@@ -231,7 +231,7 @@ func (vm VM) ExecuteResourceActionDiscovery(obj *unstructured.Unstructured, scri
 		}
 		for key := range availableActionsMap {
 			value := availableActionsMap[key]
-			resourceAction := appv1.ResourceAction{Name: key, Disabled: isActionDisabled(value)}
+			resourceAction := &appv1.ResourceAction{Name: key, Disabled: isActionDisabled(value)}
 			if emptyResourceActionFromLua(value) {
 				availableActions = append(availableActions, resourceAction)
 				continue

@@ -240,6 +240,8 @@ func ValidateRepo(
 		Source:           &spec.Source,
 		Repos:            permittedHelmRepos,
 		KustomizeOptions: kustomizeOptions,
+		// don't use case during application change to make sure to fetch latest git/helm revisions
+		NoRevisionCache: true,
 	})
 	if err != nil {
 		conditions = append(conditions, argoappv1.ApplicationCondition{
@@ -427,6 +429,7 @@ func verifyGenerateManifests(
 		KubeVersion:       kubeVersion,
 		ApiVersions:       apiVersions,
 		HelmRepoCreds:     repositoryCredentials,
+		NoRevisionCache:   true,
 	}
 	req.Repo.CopyCredentialsFromRepo(repoRes)
 	req.Repo.CopySettingsFrom(repoRes)

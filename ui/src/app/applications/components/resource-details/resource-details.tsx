@@ -2,6 +2,7 @@ import {DataLoader, Tab, Tabs} from 'argo-ui';
 import {useData} from 'argo-ui/v2';
 import * as React from 'react';
 import {EventsList, YamlEditor} from '../../../shared/components';
+import {ErrorBoundary} from '../../../shared/components/error-boundary/error-boundary';
 import {Context} from '../../../shared/context';
 import {Application, ApplicationTree, AppSourceType, Event, RepoAppDetails, ResourceNode, State, SyncStatuses} from '../../../shared/models';
 import {services} from '../../../shared/services';
@@ -119,9 +120,9 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                 title: 'More',
                 key: 'extension',
                 content: (
-                    <div>
+                    <ErrorBoundary message={`Something went wrong with Extension for ${state.kind}`}>
                         <ExtensionComponent tree={tree} resource={state} />
-                    </div>
+                    </ErrorBoundary>
                 )
             });
         }
@@ -196,10 +197,16 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
         return tabs;
     };
 
-    const [extension] = useData(() => services.extensions.loadResourceExtension(selectedNode?.group || '', selectedNode?.kind || ''), null, null, [
-        selectedNode?.group,
-        selectedNode?.kind
-    ]);
+    const [extension, , error] = useData(
+        async () => {
+            if (selectedNode?.kind && selectedNode?.group) {
+                return await services.extensions.loadResourceExtension(selectedNode?.group || '', selectedNode?.kind || '');
+            }
+        },
+        null,
+        null,
+        [selectedNode]
+    );
 
     return (
         <div style={{width: '100%', height: '100%'}}>
@@ -272,7 +279,7 @@ export const ResourceDetails = (props: ResourceDetailsProps) => {
                             </div>
                             <Tabs
                                 navTransparent={true}
-                                tabs={getResourceTabs(selectedNode, data.liveState, data.podState, data.events, extension?.component, [
+                                tabs={getResourceTabs(selectedNode, data.liveState, data.podState, data.events, error.state ? null : extension?.component, [
                                     {
                                         title: 'SUMMARY',
                                         icon: 'fa fa-file-alt',

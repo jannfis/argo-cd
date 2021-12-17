@@ -489,8 +489,9 @@ func getHelmDependencyRepos(appPath string) ([]*v1alpha1.Repository, error) {
 	for _, r := range d.Dependencies {
 		if u, err := url.Parse(r.Repository); err == nil && (u.Scheme == "https" || u.Scheme == "oci") {
 			repo := &v1alpha1.Repository{
-				Repo: r.Repository,
-				Name: r.Repository,
+				Repo:      r.Repository,
+				Name:      r.Repository,
+				EnableOCI: u.Scheme == "oci",
 			}
 			repos = append(repos, repo)
 		}
@@ -1179,7 +1180,7 @@ func (s *Service) GetAppDetails(ctx context.Context, q *apiclient.RepoServerAppD
 		return nil
 	}
 
-	settings := operationSettings{allowConcurrent: q.Source.AllowsConcurrentProcessing(), noCache: q.NoCache, noRevisionCache: q.NoCache}
+	settings := operationSettings{allowConcurrent: q.Source.AllowsConcurrentProcessing(), noCache: q.NoCache, noRevisionCache: q.NoCache || q.NoRevisionCache}
 	err := s.runRepoOperation(ctx, q.Source.TargetRevision, q.Repo, q.Source, false, cacheFn, operation, settings)
 
 	return res, err
@@ -1230,14 +1231,18 @@ func populateKsonnetAppDetails(res *apiclient.RepoAppDetailsResponse, appPath st
 }
 
 func populateHelmAppDetails(res *apiclient.RepoAppDetailsResponse, appPath string, q *apiclient.RepoServerAppDetailsQuery) error {
-	var valueFiles []string
+	var selectedValueFiles []string
 
-	valueFiles, err := findHelmValueFilesInPath(appPath)
+	if q.Source.Helm != nil {
+		selectedValueFiles = q.Source.Helm.ValueFiles
+	}
+
+	availableValueFiles, err := findHelmValueFilesInPath(appPath)
 	if err != nil {
 		return err
 	}
 
-	res.Helm = &apiclient.HelmAppSpec{ValueFiles: valueFiles}
+	res.Helm = &apiclient.HelmAppSpec{ValueFiles: availableValueFiles}
 	var version string
 	if q.Source.Helm != nil {
 		if q.Source.Helm.Version != "" {
@@ -1257,7 +1262,7 @@ func populateHelmAppDetails(res *apiclient.RepoAppDetailsResponse, appPath strin
 	if err := loadFileIntoIfExists(filepath.Join(appPath, "values.yaml"), &res.Helm.Values); err != nil {
 		return err
 	}
-	params, err := h.GetParameters(valueFiles)
+	params, err := h.GetParameters(selectedValueFiles)
 	if err != nil {
 		return err
 	}

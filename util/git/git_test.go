@@ -326,7 +326,6 @@ func TestNewFactory(t *testing.T) {
 	defer addBinDirToPath.Close()
 	closer := log.Debug()
 	defer closer()
-
 	type args struct {
 		url                   string
 		insecureIgnoreHostKey bool

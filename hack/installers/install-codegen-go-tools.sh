@@ -12,7 +12,11 @@ SRCROOT="$( CDPATH='' cd -- "$(dirname "$0")/../.." && pwd -P )"
 # 1. For CLIs which are NOT vendored in go.mod, we can run `go install` with an explicit version
 # 2. For packages which we *do* vendor in go.mod, we can run `go install` from the vendor directory
 go_mod_install() {
-    go install -mod=vendor ./vendor/$1
+    if test x$DO_NOT_USE_VENDOR != x; then
+	    go install $1
+    else
+	    go install -mod=vendor ./vendor/$1
+    fi
 }
 
 # All binaries are compiled into the argo-cd/dist directory, which is added to the PATH during codegen

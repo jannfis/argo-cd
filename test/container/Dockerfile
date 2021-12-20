@@ -32,20 +32,24 @@ COPY --from=golang /usr/local/go /usr/local/go
 ENV PATH /go/bin:/usr/local/go/bin:$PATH
 ENV GOROOT /usr/local/go
 ENV GOPATH /go
+ENV DO_NOT_USE_VENDOR true
+
+RUN mkdir -p /go/src/github.com/argoproj/argo-cd
+WORKDIR /go/src/github.com/argoproj/argo-cd
 
 # Install build and test dependencies
-ADD ./hack/tool-versions.sh .
-ADD ./hack/install.sh .
-ADD ./hack/installers installers
+ADD ./hack ./hack
+ADD go.mod go.mod
+ADD go.sum go.sum
 
-RUN ./install.sh ksonnet-linux && \
-    ./install.sh helm2-linux && \
-    ./install.sh helm-linux && \
-    ./install.sh kubectl-linux && \
-    ./install.sh kustomize-linux && \
-    ./install.sh codegen-tools && \
-    ./install.sh codegen-go-tools && \
-    ./install.sh lint-tools && \
+RUN ./hack/install.sh ksonnet-linux && \
+    ./hack/install.sh helm2-linux && \
+    ./hack/install.sh helm-linux && \
+    ./hack/install.sh kubectl-linux && \
+    ./hack/install.sh kustomize-linux && \
+    ./hack/install.sh codegen-tools && \
+    ./hack/install.sh codegen-go-tools && \
+    ./hack/install.sh lint-tools && \
     go get github.com/mattn/goreman && \
     go get github.com/kisielk/godepgraph && \
     go get github.com/jstemmer/go-junit-report && \

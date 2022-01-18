@@ -31,6 +31,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/clientcmd/api"
 
+	"github.com/argoproj/argo-cd/v2/util/env"
 	"github.com/argoproj/argo-cd/v2/util/helm"
 )
 
@@ -2262,18 +2263,19 @@ func SetK8SConfigDefaults(config *rest.Config) error {
 	}
 
 	dial := (&net.Dialer{
-		Timeout:   30 * time.Second,
-		KeepAlive: 30 * time.Second,
+		Timeout:   env.ParseDurationFromEnv(EnvK8sTCPTimeout, 30*time.Second, 0, 0),
+		KeepAlive: env.ParseDurationFromEnv(EnvK8sTCPKeepAlive, 30*time.Second, 0, 0),
 	}).DialContext
 	transport := utilnet.SetTransportDefaults(&http.Transport{
 		Proxy:               http.ProxyFromEnvironment,
-		TLSHandshakeTimeout: 10 * time.Second,
+		TLSHandshakeTimeout: env.ParseDurationFromEnv(EnvK8sTLSHandshakeTimeout, 10*time.Second, 0, 0),
 		TLSClientConfig:     tlsConfig,
 		MaxIdleConns:        K8sMaxIdleConnections,
 		MaxIdleConnsPerHost: K8sMaxIdleConnections,
 		MaxConnsPerHost:     K8sMaxIdleConnections,
 		DialContext:         dial,
 		DisableCompression:  config.DisableCompression,
+		IdleConnTimeout:     env.ParseDurationFromEnv(EnvK8sTCPIdleConnTimeout, 5*time.Minute, 0, 0),
 	})
 	tr, err := rest.HTTPWrappersForConfig(config, transport)
 	if err != nil {
@@ -2284,6 +2286,10 @@ func SetK8SConfigDefaults(config *rest.Config) error {
 	config.TLSClientConfig = rest.TLSClientConfig{}
 	config.AuthProvider = nil
 	config.ExecProvider = nil
+
+	// Set server-side timeouts to the same as TCP timeout, but with a
+	// different default value
+	config.Timeout = env.ParseDurationFromEnv(EnvK8sTCPTimeout, 32*time.Second, 0, 0)
 
 	config.Transport = tr
 	return nil
@@ -2366,6 +2372,7 @@ func (c *Cluster) RawRestConfig() *rest.Config {
 	if err != nil {
 		panic(fmt.Sprintf("Unable to create K8s REST config: %v", err))
 	}
+	config.Timeout = env.ParseDurationFromEnv(EnvK8sTCPTimeout, 180*time.Second, 0, 0)
 	return config
 }
 

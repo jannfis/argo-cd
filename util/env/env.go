@@ -52,11 +52,11 @@ func ParseDurationFromEnv(env string, defaultValue, min, max time.Duration) time
 	}
 
 	dur := *durPtr
-	if dur < min {
+	if min > 0 && dur < min {
 		log.Warnf("Value in %s is %s, which is less than minimum %s allowed", env, dur, min)
 		return defaultValue
 	}
-	if dur > max {
+	if max > 0 && dur > max {
 		log.Warnf("Value in %s is %s, which is greater than maximum %s allowed", env, dur, max)
 		return defaultValue
 	}

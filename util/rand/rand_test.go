@@ -2,6 +2,8 @@ package rand
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRandString(t *testing.T) {
@@ -13,4 +15,10 @@ func TestRandString(t *testing.T) {
 	if len(ss) != 5 {
 		t.Errorf("Expected random string of length 10, but got %q", ss)
 	}
+}
+
+func TestRandInt63(t *testing.T) {
+	i1 := RandInt63()
+	i2 := RandInt63()
+	assert.NotEqual(t, i1, i2)
 }

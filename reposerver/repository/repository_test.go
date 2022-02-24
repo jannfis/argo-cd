@@ -206,7 +206,7 @@ func TestGenerateJsonnetManifestInDir(t *testing.T) {
 				Jsonnet: argoappv1.ApplicationSourceJsonnet{
 					ExtVars: []argoappv1.JsonnetVar{{Name: "extVarString", Value: "extVarString"}, {Name: "extVarCode", Value: "\"extVarCode\"", Code: true}},
 					TLAs:    []argoappv1.JsonnetVar{{Name: "tlaString", Value: "tlaString"}, {Name: "tlaCode", Value: "\"tlaCode\"", Code: true}},
-					Libs:    []string{"testdata/jsonnet/vendor"},
+					Libs:    []string{"./vendor"},
 				},
 			},
 		},
@@ -214,6 +214,25 @@ func TestGenerateJsonnetManifestInDir(t *testing.T) {
 	res1, err := service.GenerateManifest(context.Background(), &q)
 	assert.Nil(t, err)
 	assert.Equal(t, 2, len(res1.Manifests))
+}
+
+func TestGenerateJsonnetLibOutside(t *testing.T) {
+	service := newService(".")
+
+	q := apiclient.ManifestRequest{
+		Repo: &argoappv1.Repository{},
+		ApplicationSource: &argoappv1.ApplicationSource{
+			Path: "./testdata/jsonnet",
+			Directory: &argoappv1.ApplicationSourceDirectory{
+				Jsonnet: argoappv1.ApplicationSourceJsonnet{
+					Libs: []string{"../../../testdata/jsonnet/vendor"},
+				},
+			},
+		},
+	}
+	_, err := service.GenerateManifest(context.Background(), &q)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "value file '../../../testdata/jsonnet/vendor' resolved to outside repository root")
 }
 
 func TestGenerateKsonnetManifest(t *testing.T) {
@@ -791,9 +810,7 @@ func TestGenerateHelmWithValuesDirectoryTraversalOutsideRepo(t *testing.T) {
 	})
 }
 
-// The requested file parameter (`/tmp/external-secret.txt`) is outside the app path
-// (`./util/helm/testdata/redis`), and outside the repo directory. It is used as a means
-// of providing direct content to a helm chart via a specific key.
+// File parameter should not allow traversal outside of the repository root
 func TestGenerateHelmWithAbsoluteFileParameter(t *testing.T) {
 	service := newService("../..")
 
@@ -814,16 +831,14 @@ func TestGenerateHelmWithAbsoluteFileParameter(t *testing.T) {
 			Helm: &argoappv1.ApplicationSourceHelm{
 				ValueFiles: []string{"values-production.yaml"},
 				Values:     `cluster: {slaveCount: 2}`,
-				FileParameters: []argoappv1.HelmFileParameter{
-					argoappv1.HelmFileParameter{
-						Name: "passwordContent",
-						Path: externalSecretPath,
-					},
-				},
+				FileParameters: []argoappv1.HelmFileParameter{{
+					Name: "passwordContent",
+					Path: externalSecretPath,
+				}},
 			},
 		},
 	})
-	assert.NoError(t, err)
+	assert.Error(t, err)
 }
 
 // The requested file parameter (`../external/external-secret.txt`) is outside the app path
@@ -1523,6 +1538,7 @@ func TestFindManifests_Exclude_NothingMatches(t *testing.T) {
 		[]string{"nginx-deployment", "nginx-deployment-sub"}, []string{objs[0].GetName(), objs[1].GetName()})
 }
 
+<<<<<<< HEAD
 func Test_resolveSymlinkRecursive(t *testing.T) {
 	cwd, err := os.Getwd()
 	require.NoError(t, err)
@@ -1696,4 +1712,28 @@ func Test_resolveHelmValueFilePath(t *testing.T) {
 		assert.False(t, remote)
 		assert.Equal(t, "", p)
 	})
+=======
+func TestTestRepoOCI(t *testing.T) {
+	service := newService(".")
+	_, err := service.TestRepository(context.Background(), &apiclient.TestRepositoryRequest{
+		Repo: &argoappv1.Repository{
+			Repo:      "https://demo.goharbor.io",
+			Type:      "helm",
+			EnableOCI: true,
+		},
+	})
+	assert.Error(t, err)
+	assert.Equal(t, "OCI Helm repository URL should include hostname and port only", err.Error())
+}
+
+func Test_getHelmDependencyRepos(t *testing.T) {
+	repo1 := "https://charts.bitnami.com/bitnami"
+	repo2 := "https://eventstore.github.io/EventStore.Charts"
+
+	repos, err := getHelmDependencyRepos("../../util/helm/testdata/dependency")
+	assert.NoError(t, err)
+	assert.Equal(t, len(repos), 2)
+	assert.Equal(t, repos[0].Repo, repo1)
+	assert.Equal(t, repos[1].Repo, repo2)
+>>>>>>> 96f63c3e2 (fix: prevent file traversal using helm file values param and application details api (#8606))
 }

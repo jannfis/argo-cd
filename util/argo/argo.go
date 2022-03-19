@@ -258,7 +258,6 @@ func ValidateRepo(
 		Source:           &spec.Source,
 		Repos:            helmRepos,
 		KustomizeOptions: kustomizeOptions,
-		HelmOptions:      helmOptions,
 	})
 	if err != nil {
 		conditions = append(conditions, argoappv1.ApplicationCondition{

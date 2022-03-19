@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"net/url"
 	"os"
 	"os/exec"
 	"path"
@@ -528,7 +527,7 @@ func helmTemplate(appPath string, repoRoot string, env *v1alpha1.Env, q *apiclie
 		for _, val := range appHelm.ValueFiles {
 
 			// This will resolve val to an absolute path (or an URL)
-			path, _, err := pathutil.ResolveFilePath(appPath, repoRoot, val, q.GetValuesFileSchemes())
+			path, _, err := pathutil.ResolveFilePath(appPath, repoRoot, val, []string{"http", "https"})
 			if err != nil {
 				return nil, err
 			}
@@ -558,7 +557,7 @@ func helmTemplate(appPath string, repoRoot string, env *v1alpha1.Env, q *apiclie
 			}
 		}
 		for _, p := range appHelm.FileParameters {
-			resolvedPath, _, err := pathutil.ResolveFilePath(appPath, repoRoot, env.Envsubst(p.Path), q.GetValuesFileSchemes())
+			resolvedPath, _, err := pathutil.ResolveFilePath(appPath, repoRoot, env.Envsubst(p.Path), []string{"http", "https"})
 			if err != nil {
 				return nil, err
 			}
@@ -573,9 +572,6 @@ func helmTemplate(appPath string, repoRoot string, env *v1alpha1.Env, q *apiclie
 	}
 	for i, j := range templateOpts.SetString {
 		templateOpts.SetString[i] = env.Envsubst(j)
-	}
-	for i, j := range templateOpts.SetFile {
-		templateOpts.SetFile[i] = env.Envsubst(j)
 	}
 	h, err := helm.NewHelmApp(appPath, getHelmRepos(q.Repos), isLocal, version)
 
@@ -1133,7 +1129,7 @@ func (s *Service) GetAppDetails(ctx context.Context, q *apiclient.RepoServerAppD
 				}
 				res.Helm.Values = string(bytes)
 			}
-			params, err := h.GetParameters(valueFiles(q))
+			params, err := h.GetParameters(valueFiles(q, q.Source.Path, repoRoot))
 			if err != nil {
 				return nil, err
 			}
@@ -1251,11 +1247,18 @@ func (s *Service) GetRevisionMetadata(ctx context.Context, q *apiclient.RepoServ
 	return metadata, nil
 }
 
-func valueFiles(q *apiclient.RepoServerAppDetailsQuery) []string {
+func valueFiles(q *apiclient.RepoServerAppDetailsQuery, appPath string, repoRoot string) []pathutil.ResolvedFilePath {
 	if q.Source.Helm == nil {
 		return nil
 	}
-	return q.Source.Helm.ValueFiles
+	rp := []pathutil.ResolvedFilePath{}
+	for _, vf := range q.Source.Helm.ValueFiles {
+		p, _, err := pathutil.ResolveFilePath(appPath, repoRoot, vf, []string{"http", "https"})
+		if err == nil {
+			rp = append(rp, p)
+		}
+	}
+	return rp
 }
 
 func fileParameters(q *apiclient.RepoServerAppDetailsQuery) []v1alpha1.HelmFileParameter {

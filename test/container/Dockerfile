@@ -4,7 +4,7 @@ FROM node:12.18.4 as node
 
 FROM golang:1.16.4 as golang
 
-FROM ubuntu:20.10
+FROM ubuntu:21.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN  apt-get update && apt-get install -y \

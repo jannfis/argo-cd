@@ -381,7 +381,7 @@ export class ApplicationDetails extends React.Component<RouteComponentProps<{nam
                                                                         key='appDetails'
                                                                         input={application}
                                                                         load={app =>
-                                                                            services.repos.appDetails(app.spec.source, app.metadata.name).catch(() => ({
+                                                                            services.repos.appDetails(app.spec.source, app.metadata.name, app.spec.project).catch(() => ({
                                                                                 type: 'Directory' as appModels.AppSourceType,
                                                                                 path: application.spec.source.path
                                                                             }))

@@ -2,6 +2,7 @@ package v1alpha1
 
 import (
 	"fmt"
+	"net"
 	"net/url"
 
 	"github.com/argoproj/argo-cd/v2/util/cert"
@@ -243,8 +244,15 @@ func getCAPath(repoURL string) string {
 	}
 
 	if hostname == "" {
-		log.Warnf("Could not get hostname for repository '%s'", repoURL)
-		return ""
+		hostname, _, err = net.SplitHostPort(repoURL)
+		if err != nil {
+			log.Warnf("Could not parse repo URL '%s': %v", repoURL, err)
+			return ""
+		}
+		if hostname == "" {
+			log.Warnf("Could not get hostname for repository '%s'", repoURL)
+			return ""
+		}
 	}
 
 	caPath, err := cert.GetCertBundlePathForRepository(hostname)
